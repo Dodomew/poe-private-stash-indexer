@@ -1,0 +1,12 @@
+.list {
+    display: flex;
+    flex-flow: column nowrap;
+}
+
+.list__item {
+    padding: 10px;
+}
+
+.list__item:nth-child(even) {
+    background-color: lightgray;
+}

@@ -2,7 +2,9 @@
 const fs = require('fs');
 const express = require('express');
 const bodyParser = require('body-parser');
+const ejs = require('ejs');
 const getItems = require('./getItems');
+const path = require('path')
 
 let url = 'https://www.pathofexile.com/character-window/get-stash-items?league=LEGION&tabs=%7B0,1%7D&tabIndex=%7B0,N%7D&accountName=Dodomew'
 
@@ -11,6 +13,8 @@ let urlencodedParser = bodyParser.urlencoded({ extended: false })
 
 //init the app
 let app = express();
+app.set('view engine', 'ejs');
+app.use(express.static(path.join(__dirname, 'public')));
 
 //homepage
 app.get('/', (req, res) => {
@@ -24,9 +28,8 @@ app.post('/', urlencodedParser, (req, res) => {
 
     // let url = 'https://www.pathofexile.com/character-window/get-stash-items?league=' + league.toUpperCase() + '&tabs=%7B0,1%7D&tabIndex=%7B0,N%7D&accountName='+ accountName
     getItems(league, accountName, sessionID).then((allItems) => {
-        // console.log(allItems);
-        servePage('/result.html', res)
-        res.write(allItems);
+        console.log(allItems[0][0]);
+        res.render('result', { stashTab: allItems } );
     });
 });
 
@@ -54,18 +57,3 @@ var servePage = function(url, response) {
     });
     page.pipe(response);
 };
-
-// // https.get(url, res => {
-// //     let json = "";
-// //     res.setEncoding("utf8");
-// //     res.on("data", data => {
-// //         json += data;
-// //     });
-// //     res.on("end", () => {
-// //         jsonObj = JSON.parse(json);
-// //         console.log(jsonObj);
-// //         // for (let i = 0; i < jsonObj.length; i++) {
-// //         //     console.log(jsonObj[i].name);
-// //         // }
-// //     });
-// // });
