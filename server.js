@@ -4,9 +4,8 @@ const express = require('express');
 const bodyParser = require('body-parser');
 const ejs = require('ejs');
 const getItems = require('./getItems');
+const filterItems = requite('./filterItems');
 const path = require('path')
-
-let url = 'https://www.pathofexile.com/character-window/get-stash-items?league=LEGION&tabs=%7B0,1%7D&tabIndex=%7B0,N%7D&accountName=Dodomew'
 
 // create application/x-www-form-urlencoded parser
 let urlencodedParser = bodyParser.urlencoded({ extended: false })
@@ -14,6 +13,7 @@ let urlencodedParser = bodyParser.urlencoded({ extended: false })
 //init the app
 let app = express();
 app.set('view engine', 'ejs');
+//now we can serve static files, like .css
 app.use(express.static(path.join(__dirname, 'public')));
 
 //homepage
@@ -26,15 +26,15 @@ app.post('/', urlencodedParser, (req, res) => {
     let accountName = req.body.accountName.toUpperCase();
     let sessionID = req.body.sessionID;
 
-    // let url = 'https://www.pathofexile.com/character-window/get-stash-items?league=' + league.toUpperCase() + '&tabs=%7B0,1%7D&tabIndex=%7B0,N%7D&accountName='+ accountName
+    /*
+        When we receive the POST data, we will fire this function which
+        fires a request for each tab the account has.
+        When it resolves, we have succesfully obtained an array, containing an array of objects,
+        where each object is a stash tab
+     */
     getItems(league, accountName, sessionID).then((allItems) => {
-        console.log(allItems[0][0]);
         res.render('result', { stashTab: allItems } );
     });
-});
-
-app.get('/contact', (req, res) => {
-    servePage('/contact.html', res);
 });
 
 // 404
