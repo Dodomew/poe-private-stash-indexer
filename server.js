@@ -4,8 +4,8 @@ const express = require('express');
 const bodyParser = require('body-parser');
 const ejs = require('ejs');
 const getItems = require('./getItems');
-const filterItems = requite('./filterItems');
-const path = require('path')
+const filterItems = require('./filterItems');
+const path = require('path');
 
 // create application/x-www-form-urlencoded parser
 let urlencodedParser = bodyParser.urlencoded({ extended: false })
@@ -33,7 +33,14 @@ app.post('/', urlencodedParser, (req, res) => {
         where each object is a stash tab
      */
     getItems(league, accountName, sessionID).then((allItems) => {
-        res.render('result', { stashTab: allItems } );
+        filterItems(allItems).then((filteredItems) => {
+            let test = Object.keys(filteredItems)[0];
+            console.log(test);
+            console.log(Object.values(filteredItems)[0][0]);
+            res.render('result', {
+                filteredItems: filteredItems
+            });
+        });
     });
 });
 

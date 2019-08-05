@@ -10,8 +10,16 @@
   "author": "Doortje Spanjerberg",
   "license": "ISC",
   "dependencies": {
+    "cssnano": "^4.1.10",
     "ejs": "^2.6.2",
     "express": "^4.17.1",
+    "gulp": "^4.0.2",
+    "gulp-autoprefixer": "^6.1.0",
+    "gulp-concat": "^2.6.1",
+    "gulp-cssnano": "^2.1.3",
+    "gulp-if": "^3.0.0",
+    "gulp-sass": "^4.0.2",
+    "gulp-uglify": "^3.0.2",
     "nodemon": "^1.19.1"
   }
 }

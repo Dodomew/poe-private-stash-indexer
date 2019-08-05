@@ -1,12 +1,40 @@
 .list {
     display: flex;
     flex-flow: column nowrap;
+    padding: 0;
+    margin: 0 auto;
 }
 
-.list__item {
+.list-item {
     padding: 10px;
+    display: flex;
+    flex-flow: row nowrap;
+    justify-content: flex-start;
+    align-items: center;
 }
 
-.list__item:nth-child(even) {
-    background-color: lightgray;
+.list-item:nth-child(even) {
+    background-color: rgb(40,40,40);
+}
+
+.list-item__img {
+    margin-right: 10px;
+}
+
+.main {
+    padding: 0 20px;
+    margin: 0 auto;
+    font-family: 'Verdana', 'Arial', 'sans-serif';
+    background-color: rgb(20, 20, 20);
+    color: #fff;
+}
+
+.list-item__name {
+    font-size: 16px;
+    margin: 0 0 10px;
+}
+
+.list-item__amount {
+    font-size: 14px;
+    margin: 0;
 }

@@ -11,16 +11,23 @@
     <body>
         <div class="main">
             <h1>Result</h1>
-            <ul class="list">
-                <% for(let i = 0; i < stashTab.length; i++) {%>
-                    <% for(let j = 0; j < stashTab[i].length; j++) {%>
-                        <li class="list__item">
-                            Name: <%= stashTab[i][j].typeLine %>
-                            Amount: <%= stashTab[i][j].stackSize %>
+            <% let items = Object.values(filteredItems); %>
+            <% let category = Object.keys(filteredItems); %>
+            <% for(let i = 0; i < items.length; i++) {%>
+                <h2> <%= category[i] %> </h2>
+                <ul class="list">
+                    <% for(let j = 0; j < items[i].length; j++) {%>
+                    <% let item = items[i][j] %>
+                        <li class="list-item">
+                            <img src="<%= item.icon %>" alt="<%= item.typeLine %>" class="list-item__img"/>
+                            <div class="list-item__meta">
+                                <h3 class="list-item__name"><%= item.typeLine %></h3>
+                                <p class="list-item__amount">Amount: <%= item.stackSize %></p>
+                            </div>
                         </li>
                     <% } %>
-                <% } %>
-            </ul>
+                </ul>
+            <% } %>
         </div>
     </body>
 </html>
