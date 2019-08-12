@@ -1,3 +1,39 @@
 .main {
     background-color: black;
+    color: #fff;
+    min-height: 100%;
+    padding: 0 20px;
+}
+
+.list {
+    display: flex;
+    flex-flow: column nowrap;
+    padding: 0;
+    margin-bottom: 50px;
+
+    &-item {
+        padding: 10px;
+        display: flex;
+        flex-flow: row nowrap;
+        justify-content: flex-start;
+        align-items: center;
+
+        &:nth-child(even) {
+            background-color: rgb(50,50,50);
+        }
+
+        &__name {
+            font-size: 16px;
+            margin: 0 0 10px;
+        }
+
+        &__amount {
+            font-size: 14px;
+            margin: 0;
+        }
+
+        &__img {
+            margin-right: 10px;
+        }
+    }
 }

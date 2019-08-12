@@ -5,6 +5,7 @@ const bodyParser = require('body-parser');
 const ejs = require('ejs');
 const getItems = require('./getItems');
 const filterItems = require('./filterItems');
+const organizeItems = require('./organizeItems');
 const path = require('path');
 
 // create application/x-www-form-urlencoded parser
@@ -34,9 +35,11 @@ app.post('/', urlencodedParser, (req, res) => {
      */
     getItems(league, accountName, sessionID).then((allItems) => {
         filterItems(allItems).then((filteredItems) => {
+            organizeItems(filteredItems);
             let test = Object.keys(filteredItems)[0];
-            console.log(test);
-            console.log(Object.values(filteredItems)[0][0]);
+            // console.log(test);
+            // console.log(Object.values(filteredItems)[3][0]);
+            // console.log(Object.values(filteredItems)[9][0]); //sale tab
             res.render('result', {
                 filteredItems: filteredItems
             });

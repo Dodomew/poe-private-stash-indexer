@@ -5,7 +5,7 @@
         <meta name="viewport"
               content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">
         <meta http-equiv="X-UA-Compatible" content="ie=edge">
-        <link rel="stylesheet" href="css/style.css" type="text/css">
+        <link rel="stylesheet" href="css/main.css" type="text/css">
         <title>Result</title>
     </head>
     <body>
@@ -22,7 +22,13 @@
                             <img src="<%= item.icon %>" alt="<%= item.typeLine %>" class="list-item__img"/>
                             <div class="list-item__meta">
                                 <h3 class="list-item__name"><%= item.typeLine %></h3>
-                                <p class="list-item__amount">Amount: <%= item.stackSize %></p>
+                                <p class="list-item__amount">
+                                    Amount: <% if (!item.stackSize) { %>
+                                        1
+                                    <% } else { %>
+                                        <%= item.stackSize %>
+                                    <% } %>
+                                </p>
                             </div>
                         </li>
                     <% } %>
