@@ -1,0 +1,56 @@
+.tabs {
+    display: flex;
+    flex-flow: column nowrap;
+}
+
+.tab {
+    text-align: center;
+    width: 100%;
+
+    & input {
+        display: none;
+
+        &:checked {
+            & + .tab__label {
+                background-color: pink;
+            }
+        }
+
+        &:not(:checked) {
+            & + .tab__label {
+                background-color: rgb(100,100,100);
+            }
+        }
+    }
+
+    &__label {
+        display: inherit;
+        font-family: "Fjalla One", sans-serif;
+        font-size: 26px;
+        color: #FFF;
+        padding: 5px;
+        background-color: rgb(50,50,50);
+        margin-bottom: 10px;
+    }
+
+    &-result {
+        position: relative;
+        display: block;
+        width: 100%;
+        padding: 10px;
+    }
+}
+
+.content {
+    position: relative;
+    display: none;
+
+    &.is-active {
+        display: block;
+    }
+}
+
+.wrapper {
+    display: flex;
+    padding: 30px 0;
+}

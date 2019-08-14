@@ -35,13 +35,10 @@ app.post('/', urlencodedParser, (req, res) => {
      */
     getItems(league, accountName, sessionID).then((allItems) => {
         filterItems(allItems).then((filteredItems) => {
-            organizeItems(filteredItems);
-            let test = Object.keys(filteredItems)[0];
-            // console.log(test);
-            // console.log(Object.values(filteredItems)[3][0]);
-            // console.log(Object.values(filteredItems)[9][0]); //sale tab
-            res.render('result', {
-                filteredItems: filteredItems
+            organizeItems(filteredItems).then((organizedItems) => {
+                res.render('result', {
+                    organizedItems: organizedItems
+                });
             });
         });
     });

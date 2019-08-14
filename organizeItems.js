@@ -1,6 +1,4 @@
 module.exports = (filteredItems) => new Promise((resolve, reject) => {
-    let dictionary = {};
-
     /*
 
     filteredItems = object holding object holding array that holds objects
@@ -47,13 +45,12 @@ module.exports = (filteredItems) => new Promise((resolve, reject) => {
     let items = Object.values(filteredItems);
     let category = Object.keys(filteredItems);
 
-    // console.log(items[9][0]);
-
     for (let i = 0; i < items.length; i++) {
         for (let j = 0; j < items[i].length; j++) {
             let item = items[i][j];
-
             let objToFill = {};
+
+            //certain items don't stack, so I ''stack'' them here for better viewing
             switch (item.category) {
                 case 'resonator':
                     objToFill = resonators;
@@ -67,16 +64,25 @@ module.exports = (filteredItems) => new Promise((resolve, reject) => {
 
             let itemName = item.typeLine;
 
+            //if the item does not exist yet, we create it and set amount to 1
             if(!objToFill.hasOwnProperty(itemName)) {
-                objToFill[itemName] = 1;
+                objToFill[itemName] = item;
+                objToFill[itemName].stackSize = 1;
             }
             else {
-                objToFill[itemName] = objToFill[itemName] + 1;
+                objToFill[itemName].stackSize++;
             }
+        }
+
+        // we add a new key called stackSize to the original filtered object's category
+        // that way we can still loop through all the objects, e.g. item.stackSize
+        if(category[i] === 'resonator') {
+            filteredItems[category[i]] = Object.values(resonators);
+        }
+        else if (category[i] === 'prophecy') {
+            filteredItems[category[i]] = Object.values(prophecies);
         }
     }
 
-    console.log(prophecies);
-
-    resolve(dictionary);
+    resolve(filteredItems);
 });
