@@ -30,21 +30,19 @@
                 </div>
                 <div class="tab-result">
                     <% for(let i = 0; i < items.length; i++) {%>
-                        <div class="content js-content tab--<%=i%><%= i === 0 ? ' is-active' : ''%>">
+                        <div class="content js-content<%= i === 0 ? ' is-active' : ''%> " data-category="<%= category[i]%>">
                             <ul class="list">
                                 <% for(let j = 0; j < items[i].length; j++) {%>
                                     <% let item = items[i][j] %>
                                     <li class="list-item">
-                                        <img src="<%= item.icon %>" alt="<%= item.typeLine %>" class="list-item__img"/>
+                                        <div class="list-item__media">
+                                            <img src="<%= item.icon %>" alt="<%= item.typeLine %>" class="list-item__img"/>
+                                        </div>
                                         <div class="list-item__meta">
-                                            <h3 class="list-item__name"><%= item.typeLine %></h3>
                                             <p class="list-item__amount">
-                                                Amount: <% if (!item.stackSize) { %>
-                                                    1
-                                                <% } else { %>
-                                                    <%= item.stackSize %>
-                                                <% } %>
+                                                x<%= item.stackSize %>
                                             </p>
+                                            <h3 class="list-item__name"><%= item.typeLine %></h3>
                                         </div>
                                     </li>
                                 <% } %>
@@ -53,6 +51,7 @@
                     <% } %>
                 </div>
             </div>
+            <a href="#" class="btn btn--scroll js-btn-scrolltop">Scroll top</a>
         </div>
         <script src="js/main.js"></script>
     </body>

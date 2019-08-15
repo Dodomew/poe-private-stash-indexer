@@ -1,39 +1,56 @@
-.main {
-    background-color: black;
-    color: #fff;
-    min-height: 100%;
-    padding: 0 20px;
-}
-
 .list {
     display: flex;
     flex-flow: column nowrap;
     padding: 0;
-    margin-bottom: 50px;
 
     &-item {
-        padding: 10px;
+        padding: 12px 10px;
         display: flex;
         flex-flow: row nowrap;
         justify-content: flex-start;
         align-items: center;
+        background: $colorSecBase;
+
+        .content[data-category="flasks"] &,
+        .content[data-category="resonator"] & {
+            padding: 2px 10px;
+        }
 
         &:nth-child(even) {
-            background-color: rgb(50,50,50);
+            background-color: #23313e;
         }
 
         &__name {
-            font-size: 16px;
-            margin: 0 0 10px;
+            font-size: 20px;
         }
 
         &__amount {
-            font-size: 14px;
-            margin: 0;
+            font-size: 20px;
+            margin: 0 16px 0 0;
+            flex: 0 0 60px;
         }
 
-        &__img {
+        &__media {
             margin-right: 10px;
+            flex: 0 0 36px;
+
+            .content[data-category="flasks"] & {
+                flex: 0 0 28px;
+            }
+
+            .content[data-category="resonator"] & {
+                flex: 0 0 30px;
+                height: 56px;
+                display: flex;
+                justify-content: center;
+                align-items: center;
+            }
+        }
+
+        &__meta {
+            display: flex;
+            flex-flow: row nowrap;
+            width: 100%;
         }
     }
 }

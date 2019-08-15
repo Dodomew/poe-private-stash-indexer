@@ -10,7 +10,6 @@ function addListenersToInput() {
 }
 
 function showContent(checkedElem) {
-    console.log(checkedElem);
     for (let i = 0, length = tabs.length; i < length; i++)
     {
         if (tabs[i].checked)

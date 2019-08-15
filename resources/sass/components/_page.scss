@@ -1,0 +1,31 @@
+$colorPriBase: #c96567;
+$colorPriLight: #9e5a63;
+$colorSecBase: #314455;
+$colorSecLight: #644e5b;
+$colorTer: #97aabd;
+$colorSecDark: #23313e;
+
+
+.main {
+    background-color: $colorSecDark;
+    color: #fff;
+    min-height: 100%;
+    padding: 0 20px;
+    font-family: "Fjalla One", 'Verdana', 'Arial', sans-serif;
+}
+
+.content {
+    position: relative;
+    display: none;
+
+    &.is-active {
+        display: block;
+    }
+}
+
+.wrapper {
+    display: flex;
+    padding: 60px 0;
+    max-width: 1280px;
+    margin: 0 auto;
+}

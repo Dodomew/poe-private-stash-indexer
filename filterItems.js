@@ -30,6 +30,10 @@ module.exports = (rawItems) => new Promise((resolve, reject) => {
                 categoryOfItem = 'scarab';
             }
 
+            if (categoryOfItem === 'accessories' || categoryOfItem === 'weapons' || categoryOfItem === 'armour') {
+                continue;
+            }
+
             if (!dictionary.hasOwnProperty(categoryOfItem)) {
                 dictionary[categoryOfItem] = [];
             }
