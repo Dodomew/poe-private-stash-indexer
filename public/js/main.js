@@ -1,3 +1,16 @@
+function initButtonLogic() {
+    let scrollButton = document.getElementsByClassName('js-btn-scrolltop');
+    scrollButton[0].addEventListener('click', scrollToTop, false);
+}
+
+function scrollToTop(e) {
+    e.preventDefault();
+    window.scrollTo({
+        top: 0,
+        behavior: 'smooth'
+    });
+}
+
 function initTabLogic() {
     let tabs = document.getElementsByClassName('js-tab-input');
     let content = document.getElementsByClassName('js-content');
@@ -30,3 +43,8 @@ function toggleContent(tabs, content) {
         }
     }
 }
+
+(function () {
+    initTabLogic();
+    initButtonLogic();
+}());

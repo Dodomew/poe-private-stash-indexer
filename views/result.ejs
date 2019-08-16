@@ -40,7 +40,11 @@
                                         </div>
                                         <div class="list-item__meta">
                                             <p class="list-item__amount">
-                                                x<%= item.stackSize %>
+                                                <% if (!item.stackSize) { %>
+                                                    x1
+                                                <% } else { %>
+                                                    x<%= item.stackSize %>
+                                                <% } %>
                                             </p>
                                             <h3 class="list-item__name"><%= item.typeLine %></h3>
                                         </div>
@@ -51,8 +55,8 @@
                     <% } %>
                 </div>
             </div>
-            <a href="#" class="btn btn--scroll js-btn-scrolltop">Scroll top</a>
+            <a href="#" class="btn btn--scroll js-btn-scrolltop"></a>
         </div>
-        <script src="js/main.js"></script>
+        <script type="module" src="js/main.js"></script>
     </body>
 </html>

@@ -141,7 +141,6 @@ iframe {
   background-color: #23313e;
   color: #fff;
   min-height: 100%;
-  padding: 0 20px;
   font-family: "Fjalla One", 'Verdana', 'Arial', sans-serif; }
 
 .content {
@@ -152,8 +151,8 @@ iframe {
 
 .wrapper {
   display: flex;
-  padding: 60px 0;
-  max-width: 1280px;
+  padding: 60px 20px;
+  max-width: 1440px;
   margin: 0 auto; }
 
 .list {
@@ -243,5 +242,18 @@ iframe {
     height: 50px;
     background-color: #c96567;
     position: fixed;
-    bottom: 20px;
-    right: 20px; }
+    bottom: 30px;
+    right: 30px; }
+    .btn--scroll::before, .btn--scroll::after {
+      content: '';
+      position: absolute;
+      background-color: #fff;
+      top: 12px;
+      width: 4px;
+      height: 20px; }
+    .btn--scroll::before {
+      left: 17px;
+      transform: rotate(45deg); }
+    .btn--scroll::after {
+      right: 17px;
+      transform: rotate(-45deg); }

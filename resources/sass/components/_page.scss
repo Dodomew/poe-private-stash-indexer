@@ -10,7 +10,6 @@ $colorSecDark: #23313e;
     background-color: $colorSecDark;
     color: #fff;
     min-height: 100%;
-    padding: 0 20px;
     font-family: "Fjalla One", 'Verdana', 'Arial', sans-serif;
 }
 
@@ -25,7 +24,7 @@ $colorSecDark: #23313e;
 
 .wrapper {
     display: flex;
-    padding: 60px 0;
-    max-width: 1280px;
+    padding: 60px 20px;
+    max-width: 1440px;
     margin: 0 auto;
 }

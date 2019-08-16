@@ -29,7 +29,27 @@
         height: 50px;
         background-color: $colorPriBase;
         position: fixed;
-        bottom: 20px;
-        right: 20px;
+        bottom: 30px;
+        right: 30px;
+
+        &::before,
+        &::after {
+            content: '';
+            position: absolute;
+            background-color: #fff;
+            top: 12px;
+            width: 4px;
+            height: 20px;
+        }
+
+        &::before {
+            left: 17px;
+            transform: rotate(45deg);
+        }
+
+        &::after {
+            right: 17px;
+            transform: rotate(-45deg);
+        }
     }
 }
