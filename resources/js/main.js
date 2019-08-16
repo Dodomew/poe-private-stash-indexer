@@ -3,13 +3,11 @@ var content = document.getElementsByClassName('js-content');
 
 function addListenersToInput() {
     for (let i = 0; i < tabs.length; i++) {
-        tabs[i].addEventListener('change', () => {
-            showContent(tabs[i]);
-        });
+        tabs[i].addEventListener('change', toggleContent, false);
     }
 }
 
-function showContent(checkedElem) {
+function toggleContent() {
     for (let i = 0, length = tabs.length; i < length; i++)
     {
         if (tabs[i].checked)
