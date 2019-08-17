@@ -1,0 +1,35 @@
+.form {
+    display: flex;
+    align-items: center;
+    flex-flow: row wrap;
+    max-width: 480px;
+    margin: 0 auto;
+    padding-top: 60px;
+
+    &__input {
+        border: none;
+        padding: 20px;
+        width: 100%;
+        margin-bottom: 20px;
+        border-radius: 0;
+        font-size: 16px;
+    }
+
+    & select.form__input {
+        background: url('../images/caret-down.svg') calc(100% - 20px) 50% no-repeat #fff;
+    }
+
+    &__label {
+        margin-bottom: 5px;
+    }
+
+    &__submit {
+        background-color: $colorPriBase;
+        padding: 20px 0;
+        width: 100%;
+        font-size: 16px;
+        color: #fff;
+        font-weight: bold;
+        margin-top: 20px;
+    }
+}
