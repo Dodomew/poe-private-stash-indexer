@@ -52,10 +52,10 @@ module.exports = (filteredItems) => new Promise((resolve, reject) => {
 
             //certain items don't stack, so I ''stack'' them here for better viewing
             switch (item.category) {
-                case 'resonator':
+                case 'resonators':
                     objToFill = resonators;
                     break;
-                case 'prophecy':
+                case 'prophecies':
                     objToFill = prophecies;
                     break;
                 default:
@@ -76,13 +76,12 @@ module.exports = (filteredItems) => new Promise((resolve, reject) => {
 
         // we add a new key called stackSize to the original filtered object's category
         // that way we can still loop through all the objects, e.g. item.stackSize
-        if(category[i] === 'resonator') {
+        if(category[i] === 'resonators') {
             filteredItems[category[i]] = Object.values(resonators);
         }
-        else if (category[i] === 'prophecy') {
+        else if (category[i] === 'prophecies') {
             filteredItems[category[i]] = Object.values(prophecies);
         }
     }
-
     resolve(filteredItems);
 });

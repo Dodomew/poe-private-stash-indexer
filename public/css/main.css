@@ -242,7 +242,8 @@ iframe {
     font-size: 26px;
     color: #fff;
     padding: 14px 30px 15px;
-    background-color: #23313e; }
+    background-color: #23313e;
+    text-transform: capitalize; }
   .tab-result {
     position: relative;
     display: block;

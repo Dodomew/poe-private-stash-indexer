@@ -6,6 +6,7 @@ const ejs = require('ejs');
 const getItems = require('./getItems');
 const filterItems = require('./filterItems');
 const organizeItems = require('./organizeItems');
+const getValueOfItems = require('./getValueOfItems');
 const path = require('path');
 
 // create application/x-www-form-urlencoded parser
@@ -36,6 +37,7 @@ app.post('/', urlencodedParser, (req, res) => {
     getItems(league, accountName, sessionID).then((allItems) => {
         filterItems(allItems).then((filteredItems) => {
             organizeItems(filteredItems).then((organizedItems) => {
+                getValueOfItems(organizedItems);
                 res.render('result', {
                     organizedItems: organizedItems
                 });

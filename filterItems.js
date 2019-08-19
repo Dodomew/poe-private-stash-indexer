@@ -7,30 +7,43 @@ module.exports = (rawItems) => new Promise((resolve, reject) => {
                 continue;
             }
 
+            // dictionary will be filled with categories -> items
             let item = rawItems[i][j];
             let categoryOfItem = Object.keys(rawItems[i][j].category)[0];
 
+            // prophecies have the currency category; i create prophecy category
             if (item.hasOwnProperty('prophecyText')) {
-                categoryOfItem = 'prophecy';
+                categoryOfItem = 'prophecies';
             }
 
             if (item.typeLine.indexOf('Essence') !== -1 || item.typeLine.indexOf('Remnant') !== -1 && categoryOfItem === 'currency') {
-                categoryOfItem = 'essence';
+                categoryOfItem = 'essences';
             }
 
+            // fossils also are currency; now fossil category
             if (item.typeLine.indexOf('Fossil') !== -1) {
-                categoryOfItem = 'fossil';
+                categoryOfItem = 'fossils';
             }
 
+            // resonators also are currency; now resonator category
             if (item.typeLine.indexOf('Resonator') !== -1) {
-                categoryOfItem = 'resonator';
+                categoryOfItem = 'resonators';
             }
 
             if (item.typeLine.indexOf('Scarab') !== -1 && categoryOfItem === 'maps') {
-                categoryOfItem = 'scarab';
+                categoryOfItem = 'scarabs';
             }
 
-            if (categoryOfItem === 'accessories' || categoryOfItem === 'weapons' || categoryOfItem === 'armour') {
+            if(categoryOfItem === 'gems') {
+                categoryOfItem = 'skill gems';
+            }
+
+            if(categoryOfItem === 'cards') {
+                categoryOfItem = 'divination cards'
+            }
+
+            //we skip these for now
+            if (categoryOfItem === 'accessories' || categoryOfItem === 'weapons' || categoryOfItem === 'armour' || categoryOfItem === 'flasks' || categoryOfItem === 'jewels') {
                 continue;
             }
 
