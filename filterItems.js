@@ -34,16 +34,16 @@ module.exports = (rawItems) => new Promise((resolve, reject) => {
                 categoryOfItem = 'scarabs';
             }
 
-            if(categoryOfItem === 'gems') {
-                categoryOfItem = 'skill gems';
-            }
+            // if(categoryOfItem === 'gems') {
+            //     categoryOfItem = 'skill gems';
+            // }
 
             if(categoryOfItem === 'cards') {
                 categoryOfItem = 'divination cards'
             }
 
             //we skip these for now
-            if (categoryOfItem === 'accessories' || categoryOfItem === 'weapons' || categoryOfItem === 'armour' || categoryOfItem === 'flasks' || categoryOfItem === 'jewels') {
+            if (categoryOfItem === 'accessories' || categoryOfItem === 'weapons' || categoryOfItem === 'armour' || categoryOfItem === 'flasks' || categoryOfItem === 'jewels' || categoryOfItem === 'gems') {
                 continue;
             }
 

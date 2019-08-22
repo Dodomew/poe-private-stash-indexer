@@ -30,15 +30,9 @@ var lookupTable = {
     }
 };
 
-// lookupTable["condition"]()
-
-function buildApiUrl(overview, type, league) {
-    console.log('https://poe.ninja/api/data/currencyoverview?league=Legion&type=Currency');
-    // return "https://poe.ninja/api/data/" + overview + "overview?league=" + league + "&type=" + type;
-}
-
 let requestApiForValues = (league, category) => new Promise((resolve, reject) => {
     // console.log('https://poe.ninja/api/data/itemoverview?league=' + league + '&type=' + category);
+    // convert my category string to poe.ninja string
     category = lookupTable[category]();
     request({
                 url: 'https://poe.ninja/api/data/itemoverview?league=' + league + '&type=' + category,
@@ -59,7 +53,6 @@ module.exports = (organizedItems) => new Promise((resolve, reject) => {
     for (let i = 0; i < categoryArray.length; i++) {
         let type = categoryArray[i];
         type = type.toLowerCase();
-        console.log(type)
         allRequestPromises[i] = requestApiForValues('Legion', type);
     }
 
@@ -71,7 +64,7 @@ module.exports = (organizedItems) => new Promise((resolve, reject) => {
         values.forEach((category) => {
             overviewOfItems.push(category);
         });
-        console.log(overviewOfItems[1]);
+        // console.log(overviewOfItems[1]);
         resolve(overviewOfItems);
     });
 });
