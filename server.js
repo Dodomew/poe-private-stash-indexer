@@ -39,8 +39,8 @@ app.post('/', urlencodedParser, (req, res) => {
     getItems(league, accountName, sessionID).then((allItems) => {
         filterItems(allItems).then((filteredItems) => {
             organizeItems(filteredItems).then((organizedItems) => {
-                getValueOfItems(organizedItems).then((itemsWithValue) => {
-                    assignValueToItems(organizedItems, itemsWithValue);
+                getValueOfItems(organizedItems).then((poeNinjaItems) => {
+                    assignValueToItems(organizedItems, poeNinjaItems);
                     res.render('result', {
                         organizedItems: organizedItems
                     });

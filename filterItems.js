@@ -38,6 +38,15 @@ module.exports = (rawItems) => new Promise((resolve, reject) => {
             //     categoryOfItem = 'skill gems';
             // }
 
+            if(categoryOfItem === 'maps') {
+                if(rawItems[i][j].category.maps.length > 0) {
+                    categoryOfItem = 'fragments';
+                }
+                else {
+                    continue;
+                }
+            }
+
             if(categoryOfItem === 'cards') {
                 categoryOfItem = 'divination cards'
             }

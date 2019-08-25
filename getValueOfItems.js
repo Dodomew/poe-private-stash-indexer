@@ -16,6 +16,9 @@ var lookupTable = {
     "maps": function() {
         return "Map";
     },
+    "fragments": function() {
+        return "Fragment";
+    },
     "fossils":  function() {
         return "Fossil";
     },
@@ -31,11 +34,19 @@ var lookupTable = {
 };
 
 let requestApiForValues = (league, category) => new Promise((resolve, reject) => {
-    // console.log('https://poe.ninja/api/data/itemoverview?league=' + league + '&type=' + category);
     // convert my category string to poe.ninja string
+    let url;
     category = lookupTable[category]();
+
+    if(category === 'Fragment') {
+        url = 'https://poe.ninja/api/data/currencyoverview?league=' + league + '&type=' + category;
+    }
+    else {
+        url = 'https://poe.ninja/api/data/itemoverview?league=' + league + '&type=' + category;
+    }
+
     request({
-                url: 'https://poe.ninja/api/data/itemoverview?league=' + league + '&type=' + category,
+                url: url,
             }, (error, response, body) => {
         if (error) {
             reject(error);

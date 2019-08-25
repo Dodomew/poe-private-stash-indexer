@@ -1,10 +1,6 @@
-const performance = require('perf_hooks').performance;
-
 module.exports = (organizedItems, itemsWithValue) => new Promise((resolve, reject) => {
     let poeNinjaArray = itemsWithValue;
     let organizedItemsArray = Object.values(organizedItems);
-
-    var t0 = performance.now();
 
     //get my item, then find that item in poeNinja
     for (let i = 0; i < organizedItemsArray.length; i++) {
@@ -13,9 +9,7 @@ module.exports = (organizedItems, itemsWithValue) => new Promise((resolve, rejec
             findItemInPoeNinjaArray(item, poeNinjaArray, i);
         }
     }
-
-    var t1 = performance.now();
-    console.log("Call to findItemInPoeNinjaArray took " + (t1 - t0) + " milliseconds.");
+    resolve();
 });
 
 /*
@@ -45,7 +39,6 @@ function findItemInPoeNinjaArray(item, poeNinjaArray, startIndex) {
 
             let itemIsFound = hasItemBeenFound(itemName, poeNinjaItemName)
             if(itemIsFound) {
-                // console.log(item + ': ' + poeNinjaItemName);
                 assignChaosValueToItem(item, innerObj[j]);
                 return;
             }
@@ -58,6 +51,10 @@ function hasItemBeenFound(organizedItem, poeNinjaItem) {
 }
 
 function assignChaosValueToItem(organizedItem, poeNinjaItem) {
-    organizedItem.chaosValue = poeNinjaItem.chaosValue;
-    // console.log(organizedItem.typeLine + ' : ' + organizedItem.chaosValue);
+    if(poeNinjaItem.hasOwnProperty('receive')) {
+        organizedItem.chaosValue = poeNinjaItem.receive.value;
+    }
+    else {
+        organizedItem.chaosValue = poeNinjaItem.chaosValue;
+    }
 }
