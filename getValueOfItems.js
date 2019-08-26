@@ -30,6 +30,9 @@ var lookupTable = {
     },
     "currency": function() {
         return "Currency";
+    },
+    "incubators": function () {
+        return "Incubator";
     }
 };
 

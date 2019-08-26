@@ -37,6 +37,29 @@
     &-result {
         position: relative;
         display: block;
+        flex: 1 0 auto;
+    }
+
+    &-sort {
+        display: flex;
+        position: absolute;
+        top: -20px;
+        left: 0;
         width: 100%;
+
+        &__btn {
+            appearance: none;
+            background-color: $colorPriBase;
+            padding: 10px;
+            color: #fff;
+
+            &:nth-child(1) {
+                flex: 0 0 36px;
+            }
+
+            &:nth-child(2) {
+                flex: 0 0 60px;
+            }
+        }
     }
 }

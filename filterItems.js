@@ -34,6 +34,10 @@ module.exports = (rawItems) => new Promise((resolve, reject) => {
                 categoryOfItem = 'scarabs';
             }
 
+            if (item.typeLine.indexOf('Incubator') !== -1) {
+                categoryOfItem = 'incubators';
+            }
+
             // if(categoryOfItem === 'gems') {
             //     categoryOfItem = 'skill gems';
             // }

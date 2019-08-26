@@ -9,8 +9,27 @@ module.exports = (organizedItems, itemsWithValue) => new Promise((resolve, rejec
             findItemInPoeNinjaArray(item, poeNinjaArray, i);
         }
     }
+
+    // organizedItemsArray.sort((a, b) => (a.chaosValue > b.chaosValue) ? 1 : -1);
+    for (let i = 0; i < organizedItemsArray.length; i++) {
+        organizedItemsArray[i].sort(compare);
+    }
     resolve();
 });
+
+function compare(a, b) {
+    if(!a.chaosValue || !b.chaosValue) {
+        return 1;
+    }
+    if (a.chaosValue > b.chaosValue) {
+        return -1;
+    }
+    if (a.chaosValue < b.chaosValue) {
+        return 1;
+    }
+    // a must be equal to b
+    return 0;
+}
 
 /*
     both my array and poeNinja array are implicitly sorted already,
@@ -51,10 +70,14 @@ function hasItemBeenFound(organizedItem, poeNinjaItem) {
 }
 
 function assignChaosValueToItem(organizedItem, poeNinjaItem) {
+    let value;
+
     if(poeNinjaItem.hasOwnProperty('receive')) {
-        organizedItem.chaosValue = poeNinjaItem.receive.value;
+        value = poeNinjaItem.receive.value;
     }
     else {
-        organizedItem.chaosValue = poeNinjaItem.chaosValue;
+        value = poeNinjaItem.chaosValue;
     }
+
+    organizedItem.chaosValue = Math.round( value * 10 ) / 10;
 }

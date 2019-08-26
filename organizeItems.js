@@ -41,6 +41,7 @@ module.exports = (filteredItems) => new Promise((resolve, reject) => {
 
     let resonators = {};
     let prophecies = {};
+    let incubators = {};
 
     let items = Object.values(filteredItems);
     let category = Object.keys(filteredItems);
@@ -57,6 +58,9 @@ module.exports = (filteredItems) => new Promise((resolve, reject) => {
                     break;
                 case 'prophecies':
                     objToFill = prophecies;
+                    break;
+                case 'incubators':
+                    objToFill = incubators;
                     break;
                 default:
                     continue;
@@ -81,6 +85,9 @@ module.exports = (filteredItems) => new Promise((resolve, reject) => {
         }
         else if (category[i] === 'prophecies') {
             filteredItems[category[i]] = Object.values(prophecies);
+        }
+        else if (category[i] === 'resonators') {
+            filteredItems[category[i]] = Object.values(incubators);
         }
     }
     resolve(filteredItems);

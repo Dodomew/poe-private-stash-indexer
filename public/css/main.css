@@ -153,7 +153,8 @@ iframe {
   display: flex;
   padding: 60px 20px;
   max-width: 1440px;
-  margin: 0 auto; }
+  margin: 0 auto;
+  flex-flow: row wrap; }
 
 .form {
   display: flex;
@@ -199,7 +200,8 @@ iframe {
     .list-item:nth-child(even) {
       background-color: #23313e; }
     .list-item__name {
-      font-size: 20px; }
+      font-size: 20px;
+      flex: 1 0 auto; }
     .list-item__amount {
       font-size: 20px;
       margin: 0 16px 0 0;
@@ -219,6 +221,10 @@ iframe {
       display: flex;
       flex-flow: row nowrap;
       width: 100%; }
+    .list-item__value {
+      margin: 0;
+      padding: 0;
+      font-size: 20px; }
 
 .tabs {
   display: flex;
@@ -249,7 +255,24 @@ iframe {
   .tab-result {
     position: relative;
     display: block;
+    flex: 1 0 auto; }
+  .tab-sort {
+    display: flex;
+    position: absolute;
+    top: -20px;
+    left: 0;
     width: 100%; }
+    .tab-sort__btn {
+      -webkit-appearance: none;
+         -moz-appearance: none;
+              appearance: none;
+      background-color: #c96567;
+      padding: 10px;
+      color: #fff; }
+      .tab-sort__btn:nth-child(1) {
+        flex: 0 0 36px; }
+      .tab-sort__btn:nth-child(2) {
+        flex: 0 0 60px; }
 
 .btn {
   display: inline-block;
