@@ -29,23 +29,33 @@
                     <% } %>
                 </div>
                 <div class="tab-result">
-                    <div class="tab-sort">
-                        <button class="tab-sort__btn">
-                            Sort by name
-                        </button>
-                        <button class="tab-sort__btn">
-                            Sort by value
-                        </button>
-                    </div>
+                    <ul class="tab-sort">
+                        <li class="tab-sort-item">
+                            <div class="tab-sort-item__media"></div>
+                            <div class="tab-sort-item__meta">
+                                <p class="tab-sort-item__amount"></p>
+                                <div class="tab-sort-item__name">
+                                    <button type="button" class="tab-sort__btn" id="js-sort-by-name-btn">
+                                        Sort by name
+                                    </button>
+                                </div>
+                                <div class="tab-sort-item__value">
+                                    <button type="button" class="tab-sort__btn" id="js-sort-by-value-btn">
+                                        Sort by value
+                                    </button>
+                                </div>
+                            </div>
+                        </li>
+                    </ul>
                     <% for(let i = 0; i < items.length; i++) {%>
                         <div class="content js-content<%= i === 0 ? ' is-active' : ''%> " data-category="<%= category[i]%>">
-                            <ul class="list">
+                            <ul class="list js-list">
                                 <% for(let j = 0; j < items[i].length; j++) {%>
                                     <% let item = items[i][j] %>
                                     <% if (item.chaosValue === 0 || !item.chaosValue) { %>
                                         <% continue; %>
                                     <% } else { %>
-                                        <li class="list-item">
+                                        <li class="list-item" data-name="<%= item.typeLine %>" data-value="<%= item.chaosValue %>">
                                             <div class="list-item__media">
                                                 <img src="<%= item.icon %>" alt="<%= item.typeLine %>" class="list-item__img"/>
                                             </div>
@@ -57,9 +67,11 @@
                                                         x<%= item.stackSize %>
                                                     <% } %>
                                                 </p>
-                                                <h3 class="list-item__name"><%= item.typeLine %></h3>
-                                                <h4 class="list-item__value">
-                                                    <%= item.chaosValue %> / <%= item.chaosValue *  Math.round( item.stackSize * 10 ) / 10 %>
+                                                <h3 class="list-item__name js-item-name">
+                                                    <%= item.typeLine %>
+                                                </h3>
+                                                <h4 class="list-item__value js-item-value">
+                                                    <%= item.chaosValue %> / <%= item.chaosValue *  Math.round( item.stackSize * 100 ) / 100 %>
                                                 </h4>
                                             </div>
                                         </li>

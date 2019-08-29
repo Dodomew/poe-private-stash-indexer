@@ -258,10 +258,35 @@ iframe {
     flex: 1 0 auto; }
   .tab-sort {
     display: flex;
+    flex-flow: column nowrap;
+    padding: 0;
     position: absolute;
-    top: -20px;
+    top: 0;
     left: 0;
+    transform: translateY(-100%);
     width: 100%; }
+    .tab-sort-item {
+      padding: 12px 0 12px 10px;
+      display: flex;
+      flex-flow: row nowrap;
+      justify-content: flex-start;
+      align-items: center; }
+      .tab-sort-item__name {
+        font-size: 20px;
+        flex: 1 0 auto; }
+      .tab-sort-item__amount {
+        margin: 0 16px 0 0;
+        flex: 0 0 60px; }
+      .tab-sort-item__media {
+        margin-right: 10px;
+        flex: 0 0 36px; }
+      .tab-sort-item__meta {
+        display: flex;
+        align-items: center;
+        width: 100%; }
+      .tab-sort-item__value {
+        margin: 0;
+        padding: 0; }
     .tab-sort__btn {
       -webkit-appearance: none;
          -moz-appearance: none;
@@ -269,10 +294,6 @@ iframe {
       background-color: #c96567;
       padding: 10px;
       color: #fff; }
-      .tab-sort__btn:nth-child(1) {
-        flex: 0 0 36px; }
-      .tab-sort__btn:nth-child(2) {
-        flex: 0 0 60px; }
 
 .btn {
   display: inline-block;
