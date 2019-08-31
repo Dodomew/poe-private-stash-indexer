@@ -24,8 +24,19 @@ $colorSecDark: #23313e;
 
 .wrapper {
     display: flex;
-    padding: 60px 20px;
+    padding: 20px 0 60px;
     max-width: 1440px;
     margin: 0 auto;
     flex-flow: row wrap;
+}
+
+.title {
+    text-align: center;
+    padding-top: 50px;
+}
+
+@include media-query('desktop-sml') {
+    .wrapper {
+        padding: 80px 20px 60px;
+    }
 }

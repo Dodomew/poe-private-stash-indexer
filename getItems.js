@@ -1,9 +1,10 @@
 const request = require('request');
+const league = 'Legion';
 
 /*
     this function contains a promise which returns the data received from the request
  */
-let requestStashTab = (league, accountName, index, sessionID) => new Promise((resolve, reject) => {
+let requestStashTab = (accountName, index, sessionID) => new Promise((resolve, reject) => {
     request({
                 headers: {
                     Referer: 'https://www.pathofexile.com',
@@ -22,7 +23,7 @@ let requestStashTab = (league, accountName, index, sessionID) => new Promise((re
     the getItems() (this file) is a promise which resolves when all other promises have resolved
  */
 
-module.exports = (league, accountName, sessionID) => new Promise((resolve, reject) => {
+module.exports = (accountName, sessionID) => new Promise((resolve, reject) => {
 
     /*
         send out first request for accountname and all stashes it contains
@@ -68,7 +69,7 @@ module.exports = (league, accountName, sessionID) => new Promise((resolve, rejec
         let allRequestPromises = [];
 
         for (let i = 0; i < amountOfTotalTabs; i++) {
-            let requestPromise = requestStashTab(league, accountName, i, sessionID);
+            let requestPromise = requestStashTab(accountName, i, sessionID);
             allRequestPromises[i] = requestPromise;
         }
 

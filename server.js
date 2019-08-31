@@ -26,7 +26,6 @@ app.get('/', (req, res) => {
 });
 
 app.post('/', urlencodedParser, (req, res) => {
-    let league = req.body.league;
     let accountName = req.body.accountName.toUpperCase();
     let sessionID = req.body.sessionID;
 
@@ -36,18 +35,17 @@ app.post('/', urlencodedParser, (req, res) => {
         When it resolves, we have succesfully obtained an array, containing an array of objects,
         where each object is a stash tab
      */
-    getItems(league, accountName, sessionID).then((allItems) => {
-        filterItems(allItems).then((filteredItems) => {
-            organizeItems(filteredItems).then((organizedItems) => {
-                getValueOfItems(organizedItems).then((poeNinjaItems) => {
-                    assignValueToItems(organizedItems, poeNinjaItems);
-                    res.render('result', {
-                        organizedItems: organizedItems
-                    });
-                });
-            });
+
+    getItems(accountName, sessionID)
+        .then((allItems) => filterItems(allItems))
+        .then((filteredItems) => organizeItems(filteredItems))
+        .then((organizedItems) => getValueOfItems(organizedItems))
+        .then((data) => assignValueToItems(data[0], data[1]))
+        .then((organizedItems) => {
+            res.render('result', {
+                organizedItems: organizedItems
+            })
         });
-    });
 });
 
 // 404

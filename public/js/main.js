@@ -14,28 +14,38 @@ function scrollToTop(e) {
 function initSortLogic() {
     //get array of all categories for sorting
     let allCategories = document.getElementsByClassName('js-content');
-    let categoryArray = [];
+    let categoriesSortedByNameArray = [];
+    let categoriesSortedByValueArray = [];
 
     // for each category we keep a bool for sorting
     for (let i = 0; i < allCategories.length; i++) {
-        categoryArray.push(null);
+        categoriesSortedByNameArray.push(null);
+        categoriesSortedByValueArray.push(null);
     }
 
     document.addEventListener('click', function (event) {
         if (event.target.matches('#js-sort-by-name-btn')) {
-            sortByName(categoryArray);
+            sortList(categoriesSortedByNameArray, 'name');
         }
 
         if (event.target.matches('#js-sort-by-value-btn')) {
-            sortByValue();
+            sortList(categoriesSortedByValueArray, 'value');
         }
     }, false);
 }
 
-function sortByName(categoryArray) {
+function sortList(categoriesArray, typeToSort) {
     let lists = document.getElementsByClassName('js-list');
     let currentList;
     let categoryIndex;
+    let button;
+
+    if(typeToSort === 'name') {
+        button = document.getElementById('js-sort-by-name-btn');
+    }
+    else {
+        button = document.getElementById('js-sort-by-value-btn');
+    }
 
     //find the active list
     for (let i = 0; i < lists.length; i++) {
@@ -59,27 +69,21 @@ function sortByName(categoryArray) {
         }
     }
 
-    //if categoryArray is null, that means we have not sorted the array yet
+    //if categoriesSortedByNameArray/valueArray is null, that means we have not sorted the array yet
     //otherwise we will reverse the array
-    if(categoryArray[categoryIndex] !== null) {
+    if(categoriesArray[categoryIndex] !== null) {
         listArray.reverse();
     }
     else {
-        listArray.sort(function(a, b) {
-            let firstElemName = a.dataset.name;
-            let secondElemName = b.dataset.name;
+        sortByType(listArray, typeToSort);
+        categoriesArray[categoryIndex] = true;
+    }
 
-            if(firstElemName < secondElemName) {
-                return -1;
-            }
-
-            if(firstElemName > secondElemName) {
-                return 1;
-            }
-
-            return 0;
-        });
-        categoryArray[categoryIndex] = true;
+    if(typeToSort === 'name') {
+        button.innerText = reverseString(button.innerText);
+    }
+    else {
+        button.classList.toggle('is-active');
     }
 
     //fill the cloned list node
@@ -91,8 +95,34 @@ function sortByName(categoryArray) {
     currentList.parentNode.replaceChild(clonedList, currentList);
 }
 
-function sortByValue() {
-    console.log('bur');
+function sortByType(array, type) {
+    array.sort(function(a, b) {
+        let firstElem;
+        let secondElem;
+
+        if(type === 'name') {
+            firstElem = a.dataset.name;
+            secondElem = b.dataset.name;
+        }
+        else {
+            firstElem = parseFloat(a.dataset.value);
+            secondElem = parseFloat(b.dataset.value);
+        }
+
+        if(firstElem < secondElem) {
+            return -1;
+        }
+
+        if(firstElem > secondElem) {
+            return 1;
+        }
+
+        return 0;
+    });
+}
+
+function reverseString(str) {
+    return str.split("").reverse().join("");
 }
 
 function initTabLogic() {

@@ -10,11 +10,10 @@ module.exports = (organizedItems, itemsWithValue) => new Promise((resolve, rejec
         }
     }
 
-    // organizedItemsArray.sort((a, b) => (a.chaosValue > b.chaosValue) ? 1 : -1);
     for (let i = 0; i < organizedItemsArray.length; i++) {
         organizedItemsArray[i].sort(compare);
     }
-    resolve();
+    resolve(organizedItems);
 });
 
 function compare(a, b) {

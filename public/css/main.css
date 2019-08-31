@@ -151,10 +151,18 @@ iframe {
 
 .wrapper {
   display: flex;
-  padding: 60px 20px;
+  padding: 20px 0 60px;
   max-width: 1440px;
   margin: 0 auto;
   flex-flow: row wrap; }
+
+.title {
+  text-align: center;
+  padding-top: 50px; }
+
+@media (min-width: 1024px) {
+  .wrapper {
+    padding: 80px 20px 60px; } }
 
 .form {
   display: flex;
@@ -200,15 +208,16 @@ iframe {
     .list-item:nth-child(even) {
       background-color: #23313e; }
     .list-item__name {
-      font-size: 20px;
+      font-size: 10px;
       flex: 1 0 auto; }
     .list-item__amount {
-      font-size: 20px;
+      font-size: 10px;
       margin: 0 16px 0 0;
-      flex: 0 0 60px; }
+      flex: 0 0 20px; }
     .list-item__media {
       margin-right: 10px;
-      flex: 0 0 36px; }
+      flex: 0 0 20px;
+      display: none; }
       .content[data-category="flasks"] .list-item__media {
         flex: 0 0 28px; }
       .content[data-category="resonator"] .list-item__media {
@@ -224,22 +233,33 @@ iframe {
     .list-item__value {
       margin: 0;
       padding: 0;
-      font-size: 20px; }
+      font-size: 10px; }
+
+@media (min-width: 1024px) {
+  .list-item__media {
+    flex: 0 0 36px;
+    display: block; }
+  .list-item__value {
+    font-size: 20px; }
+  .list-item__name {
+    font-size: 20px; }
+  .list-item__amount {
+    font-size: 20px;
+    margin: 0 16px 0 0;
+    flex: 0 0 60px; } }
 
 .tabs {
   display: flex;
-  flex-flow: column nowrap;
+  flex-flow: row wrap;
   z-index: 10;
   background-color: #23313e;
   height: 100%;
-  justify-content: center;
-  padding-right: 100px;
   width: 100%;
-  max-width: 400px; }
+  padding: 0 20px; }
 
 .tab {
   text-align: center;
-  width: 100%; }
+  width: 50%; }
   .tab input {
     display: none; }
     .tab input:checked + .tab__label {
@@ -247,39 +267,32 @@ iframe {
       color: #fff; }
   .tab__label {
     display: inherit;
-    font-size: 26px;
     color: #fff;
-    padding: 14px 30px 15px;
+    font-size: 14px;
+    padding: 8px;
     background-color: #23313e;
     text-transform: capitalize; }
   .tab-result {
     position: relative;
     display: block;
-    flex: 1 0 auto; }
+    flex: 1 0 auto;
+    padding-top: 100px; }
   .tab-sort {
     display: flex;
     flex-flow: column nowrap;
     padding: 0;
-    position: absolute;
-    top: 0;
-    left: 0;
-    transform: translateY(-100%);
+    position: relative;
     width: 100%; }
     .tab-sort-item {
-      padding: 12px 0 12px 10px;
+      padding: 12px 10px;
       display: flex;
       flex-flow: row nowrap;
       justify-content: flex-start;
       align-items: center; }
       .tab-sort-item__name {
         font-size: 20px;
-        flex: 1 0 auto; }
-      .tab-sort-item__amount {
-        margin: 0 16px 0 0;
-        flex: 0 0 60px; }
-      .tab-sort-item__media {
-        margin-right: 10px;
-        flex: 0 0 36px; }
+        flex: 0 0 auto;
+        margin-right: 16px; }
       .tab-sort-item__meta {
         display: flex;
         align-items: center;
@@ -287,13 +300,67 @@ iframe {
       .tab-sort-item__value {
         margin: 0;
         padding: 0; }
+        .tab-sort-item__value .tab-sort__btn {
+          padding: 16px 36px 17px 30px;
+          background: #c96567 url("https://web.poecdn.com/image/Art/2DItems/Currency/CurrencyRerollRare.png?scale=1&w=1&h=1") no-repeat right;
+          background-size: 30px;
+          position: relative; }
+          .tab-sort-item__value .tab-sort__btn::before, .tab-sort-item__value .tab-sort__btn::after {
+            content: '';
+            position: absolute;
+            background-color: #fff;
+            top: 17px;
+            width: 3px;
+            height: 10px; }
+          .tab-sort-item__value .tab-sort__btn::before {
+            left: 22px;
+            transform: rotate(45deg); }
+          .tab-sort-item__value .tab-sort__btn::after {
+            left: 17px;
+            transform: rotate(-45deg); }
+          .tab-sort-item__value .tab-sort__btn.is-active::before {
+            left: 17px; }
+          .tab-sort-item__value .tab-sort__btn.is-active::after {
+            left: 22px; }
     .tab-sort__btn {
       -webkit-appearance: none;
          -moz-appearance: none;
               appearance: none;
       background-color: #c96567;
-      padding: 10px;
-      color: #fff; }
+      padding: 14px;
+      color: #fff;
+      font-weight: bold; }
+
+@media (min-width: 1024px) {
+  .tabs {
+    max-width: 400px;
+    padding: 0 100px 0 0;
+    flex-flow: column nowrap;
+    justify-content: center; }
+  .tab {
+    width: 100%; }
+    .tab-result {
+      padding: 0; }
+    .tab-sort {
+      position: absolute;
+      top: 0;
+      left: 0;
+      transform: translateY(-100%); }
+      .tab-sort-item {
+        padding: 12px 0 12px 10px; }
+        .tab-sort-item__amount {
+          margin: 0 16px 0 0;
+          flex: 0 0 60px; }
+        .tab-sort-item__media {
+          margin-right: 10px;
+          flex: 0 0 36px; }
+        .tab-sort-item__name {
+          flex: 1 0 auto; }
+        .tab-sort-item__value .tab-sort__btn {
+          padding: 20px 36px 21px 30px; }
+    .tab__label {
+      font-size: 26px;
+      padding: 14px 30px 15px; } }
 
 .btn {
   display: inline-block;
@@ -312,22 +379,36 @@ iframe {
     border: 0;
     padding: 0; }
   .btn--scroll {
-    width: 50px;
-    height: 50px;
     background-color: #c96567;
     position: fixed;
-    bottom: 30px;
-    right: 30px; }
+    width: 30px;
+    height: 30px;
+    bottom: 20px;
+    right: 20px; }
     .btn--scroll::before, .btn--scroll::after {
       content: '';
       position: absolute;
       background-color: #fff;
-      top: 12px;
+      top: 11px;
       width: 4px;
-      height: 20px; }
+      height: 10px; }
     .btn--scroll::before {
-      left: 17px;
+      left: 10px;
       transform: rotate(45deg); }
     .btn--scroll::after {
-      right: 17px;
+      right: 10px;
       transform: rotate(-45deg); }
+
+@media (min-width: 1024px) {
+  .btn--scroll {
+    width: 50px;
+    height: 50px;
+    bottom: 30px;
+    right: 30px; }
+    .btn--scroll::before, .btn--scroll::after {
+      height: 20px;
+      top: 15px; }
+    .btn--scroll::before {
+      left: 17px; }
+    .btn--scroll::after {
+      right: 17px; } }

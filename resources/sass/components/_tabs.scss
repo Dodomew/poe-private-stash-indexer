@@ -1,18 +1,16 @@
 .tabs {
     display: flex;
-    flex-flow: column nowrap;
+    flex-flow: row wrap;
     z-index: 10;
     background-color: $colorSecDark;
     height: 100%;
-    justify-content: center;
-    padding-right: 100px;
     width: 100%;
-    max-width: 400px;
+    padding: 0 20px;
 }
 
 .tab {
     text-align: center;
-    width: 100%;
+    width: 50%;
 
     & input {
         display: none;
@@ -27,9 +25,9 @@
 
     &__label {
         display: inherit;
-        font-size: 26px;
         color: #fff;
-        padding: 14px 30px 15px;
+        font-size: 14px;
+        padding: 8px;
         background-color: $colorSecDark;
         text-transform: capitalize;
     }
@@ -38,20 +36,18 @@
         position: relative;
         display: block;
         flex: 1 0 auto;
+        padding-top: 100px;
     }
 
     &-sort {
         display: flex;
         flex-flow: column nowrap;
         padding: 0;
-        position: absolute;
-        top: 0;
-        left: 0;
-        transform: translateY(-100%);
+        position: relative;
         width: 100%;
 
         &-item {
-            padding: 12px 0 12px 10px;
+            padding: 12px 10px;
             display: flex;
             flex-flow: row nowrap;
             justify-content: flex-start;
@@ -59,17 +55,8 @@
 
             &__name {
                 font-size: 20px;
-                flex: 1 0 auto;
-            }
-
-            &__amount {
-                margin: 0 16px 0 0;
-                flex: 0 0 60px;
-            }
-
-            &__media {
-                margin-right: 10px;
-                flex: 0 0 36px;
+                flex: 0 0 auto;
+                margin-right: 16px;
             }
 
             &__meta {
@@ -81,14 +68,105 @@
             &__value {
                 margin: 0;
                 padding: 0;
+
+                .tab-sort__btn {
+                    padding: 16px 36px 17px 30px;
+                    background: #c96567 url('https://web.poecdn.com/image/Art/2DItems/Currency/CurrencyRerollRare.png?scale=1&w=1&h=1') no-repeat right;
+                    background-size: 30px;
+                    position: relative;
+
+                    &::before,
+                    &::after {
+                        content: '';
+                        position: absolute;
+                        background-color: #fff;
+                        top: 17px;
+                        width: 3px;
+                        height: 10px;
+                    }
+
+                    &::before {
+                        left: 22px;
+                        transform: rotate(45deg);
+                    }
+
+                    &::after {
+                        left: 17px;
+                        transform: rotate(-45deg);
+                    }
+
+                    &.is-active {
+                        &::before {
+                            left: 17px;
+                        }
+
+                        &::after {
+                            left: 22px;
+                        }
+                    }
+                }
             }
         }
 
         &__btn {
             appearance: none;
             background-color: $colorPriBase;
-            padding: 10px;
+            padding: 14px;
             color: #fff;
+            font-weight: bold;
+        }
+    }
+}
+
+@include media-query('desktop-sml') {
+    .tabs {
+        max-width: 400px;
+        padding: 0 100px 0 0;
+        flex-flow: column nowrap;
+        justify-content: center;
+    }
+
+    .tab {
+        width: 100%;
+
+        &-result {
+            padding: 0;
+        }
+
+        &-sort {
+            position: absolute;
+            top: 0;
+            left: 0;
+            transform: translateY(-100%);
+
+            &-item {
+                padding: 12px 0 12px 10px;
+
+                &__amount {
+                    margin: 0 16px 0 0;
+                    flex: 0 0 60px;
+                }
+
+                &__media {
+                    margin-right: 10px;
+                    flex: 0 0 36px;
+                }
+
+                &__name {
+                    flex: 1 0 auto;
+                }
+
+                &__value {
+                    .tab-sort__btn {
+                        padding: 20px 36px 21px 30px;
+                    }
+                }
+            }
+        }
+
+        &__label {
+            font-size: 26px;
+            padding: 14px 30px 15px;
         }
     }
 }

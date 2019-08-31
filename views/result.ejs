@@ -36,13 +36,11 @@
                                 <p class="tab-sort-item__amount"></p>
                                 <div class="tab-sort-item__name">
                                     <button type="button" class="tab-sort__btn" id="js-sort-by-name-btn">
-                                        Sort by name
+                                        A - Z
                                     </button>
                                 </div>
                                 <div class="tab-sort-item__value">
-                                    <button type="button" class="tab-sort__btn" id="js-sort-by-value-btn">
-                                        Sort by value
-                                    </button>
+                                    <button type="button" class="tab-sort__btn" id="js-sort-by-value-btn"></button>
                                 </div>
                             </div>
                         </li>
@@ -55,7 +53,9 @@
                                     <% if (item.chaosValue === 0 || !item.chaosValue) { %>
                                         <% continue; %>
                                     <% } else { %>
-                                        <li class="list-item" data-name="<%= item.typeLine %>" data-value="<%= item.chaosValue %>">
+                                        <li class="list-item"
+                                            data-name="<%= item.typeLine %>"
+                                            data-value="<%= item.chaosValue *  Math.round( item.stackSize * 100 ) / 100 %>">
                                             <div class="list-item__media">
                                                 <img src="<%= item.icon %>" alt="<%= item.typeLine %>" class="list-item__img"/>
                                             </div>
@@ -71,7 +71,7 @@
                                                     <%= item.typeLine %>
                                                 </h3>
                                                 <h4 class="list-item__value js-item-value">
-                                                    <%= item.chaosValue %> / <%= item.chaosValue *  Math.round( item.stackSize * 100 ) / 100 %>
+                                                    <%= item.chaosValue %> / <%= Math.round(item.chaosValue *  item.stackSize * 100) / 100 %>
                                                 </h4>
                                             </div>
                                         </li>

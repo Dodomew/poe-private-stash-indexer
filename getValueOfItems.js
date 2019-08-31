@@ -49,11 +49,12 @@ let requestApiForValues = (league, category) => new Promise((resolve, reject) =>
     }
 
     request({
-                url: url,
-            }, (error, response, body) => {
-        if (error) {
-            reject(error);
-        }
+            url: url,
+        },
+        (error, response, body) => {
+            if (error) {
+                reject(error);
+            }
         resolve(JSON.parse(body));
     });
 });
@@ -78,8 +79,7 @@ module.exports = (organizedItems) => new Promise((resolve, reject) => {
         values.forEach((category) => {
             overviewOfItems.push(category);
         });
-        // console.log(overviewOfItems[1]);
-        resolve(overviewOfItems);
+        resolve([organizedItems, overviewOfItems]);
     });
 });
 

@@ -42,6 +42,8 @@ module.exports = (filteredItems) => new Promise((resolve, reject) => {
     let resonators = {};
     let prophecies = {};
     let incubators = {};
+    let fragments = {};
+    let scarabs = {};
 
     let items = Object.values(filteredItems);
     let category = Object.keys(filteredItems);
@@ -62,16 +64,24 @@ module.exports = (filteredItems) => new Promise((resolve, reject) => {
                 case 'incubators':
                     objToFill = incubators;
                     break;
+                case 'fragments': //most fragments actually stack, except for a few :(
+                    objToFill = fragments;
+                    break;
+                case 'scarabs':
+                    objToFill = scarabs;
+                    break;
                 default:
                     continue;
             }
 
             let itemName = item.typeLine;
 
-            //if the item does not exist yet, we create it and set amount to 1
+            //if the item does not exist yet in our obj, we create it and set amount to 1
             if(!objToFill.hasOwnProperty(itemName)) {
                 objToFill[itemName] = item;
-                objToFill[itemName].stackSize = 1;
+                if(!('stackSize' in item)) {
+                    objToFill[itemName].stackSize = 1;
+                }
             }
             else {
                 objToFill[itemName].stackSize++;
@@ -88,6 +98,12 @@ module.exports = (filteredItems) => new Promise((resolve, reject) => {
         }
         else if (category[i] === 'resonators') {
             filteredItems[category[i]] = Object.values(incubators);
+        }
+        else if (category[i] === 'fragments') {
+            filteredItems[category[i]] = Object.values(fragments);
+        }
+        else if (category[i] === 'scarabs') {
+            filteredItems[category[i]] = Object.values(scarabs);
         }
     }
     resolve(filteredItems);
