@@ -39,6 +39,7 @@ var lookupTable = {
 let requestApiForValues = (league, category) => new Promise((resolve, reject) => {
     // convert my category string to poe.ninja string
     let url;
+    console.log(category);
     category = lookupTable[category]();
 
     if(category === 'Fragment') {
@@ -61,6 +62,7 @@ let requestApiForValues = (league, category) => new Promise((resolve, reject) =>
 
 module.exports = (organizedItems) => new Promise((resolve, reject) => {
     let items = organizedItems;
+    // console.log(items)
     let overviewOfItems = [];
     let categoryArray = Object.keys(items);
     let allRequestPromises = [];
@@ -68,7 +70,7 @@ module.exports = (organizedItems) => new Promise((resolve, reject) => {
     for (let i = 0; i < categoryArray.length; i++) {
         let type = categoryArray[i];
         type = type.toLowerCase();
-        allRequestPromises[i] = requestApiForValues('Legion', type);
+        allRequestPromises[i] = requestApiForValues('Blight', type);
     }
 
     /*
