@@ -33,6 +33,9 @@ var lookupTable = {
     },
     "incubators": function () {
         return "Incubator";
+    },
+    "oils": function () {
+        return "Oil";
     }
 };
 
@@ -62,7 +65,6 @@ let requestApiForValues = (league, category) => new Promise((resolve, reject) =>
 
 module.exports = (organizedItems) => new Promise((resolve, reject) => {
     let items = organizedItems;
-    // console.log(items)
     let overviewOfItems = [];
     let categoryArray = Object.keys(items);
     let allRequestPromises = [];

@@ -1,5 +1,4 @@
 const request = require('request');
-const fs = require('fs');
 const league = 'Blight';
 
 /*
@@ -82,12 +81,6 @@ module.exports = (accountName, sessionID) => new Promise((resolve, reject) => {
             values.forEach((tabItems) => {
                 allItemsArray.push(tabItems);
             });
-            // fs.writeFile('request.json', JSON.stringify(allItemsArray), (err) => {
-            //     if (err) {
-            //         console.error(err)
-            //         throw err;
-            //     }
-            // });
             resolve(allItemsArray);
         });
     });
