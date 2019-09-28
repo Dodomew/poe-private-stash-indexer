@@ -38,7 +38,7 @@ module.exports = (rawItems) => new Promise((resolve, reject) => {
             }
 
             // prophecies have the currency category; i create prophecy category
-            if (item.hasOwnProperty('prophecyText')) {
+            if(isProphecy(item)) {
                 categoryOfItem = 'prophecies';
             }
 
@@ -47,44 +47,39 @@ module.exports = (rawItems) => new Promise((resolve, reject) => {
                 categoryOfItem = 'currency';
             }
 
-            if(item.icon.toLowerCase().indexOf('divination') !== -1) {
+            if(isDivCard(item)) {
                 categoryOfItem = 'divination cards';
             }
 
-            if(item.icon.toLowerCase().indexOf('maps') !== -1) {
+            if(isFragment(item)) {
                 categoryOfItem = 'fragments';
             }
 
-            if(item.icon.toLowerCase().indexOf('oils') !== -1) {
+            if(isOil(item)) {
                 categoryOfItem = 'oils';
             }
 
-            if (item.typeLine.indexOf('Essence') !== -1 || item.typeLine.indexOf('Remnant') !== -1 && item.icon.toLowerCase().indexOf('essence') !== -1) {
+            if(isEssence(item)) {
                 categoryOfItem = 'essences';
             }
 
-            if (item.typeLine.indexOf('Fossil') !== -1 && item.icon.toLowerCase().indexOf('delve') !== -1) {
+            if(isFossil(item)) {
                 categoryOfItem = 'fossils';
             }
 
-            // resonators also are currency; now resonator category
-            if (item.typeLine.indexOf('Resonator') !== -1 && item.icon.toLowerCase().indexOf('delve') !== -1) {
+            if(isResonator(item)) {
                 categoryOfItem = 'resonators';
             }
-            //
-            if (item.typeLine.indexOf('Scarab') !== -1 && item.icon.toLowerCase().indexOf('currency') !== -1) {
+
+            if(isScarab(item)) {
                 categoryOfItem = 'scarabs';
             }
 
-            if (item.typeLine.indexOf('Incubator') !== -1) {
-                categoryOfItem = 'incubators';
+            if(isIncubator(item)) {
+                categoryOfItem = 'incubator';
             }
 
-            // if(categoryOfItem === 'gems') {
-            //     categoryOfItem = 'skill gems';
-            // }
-
-            if(item.icon.toLowerCase().indexOf('currency') !== -1 && categoryOfItem === undefined) {
+            if(isCurrency(item, categoryOfItem)) {
                 categoryOfItem = 'currency';
             }
 
@@ -118,5 +113,65 @@ function isBreachSplinter(item) {
         if(nameOfItem.indexOf(splinterArray[i]) !== -1) {
             return true;
         }
+    }
+}
+
+function isProphecy(item) {
+    if (item.hasOwnProperty('prophecyText')) {
+        return true;
+    }
+}
+
+function isDivCard(item) {
+    if(item.icon.toLowerCase().indexOf('divination') !== -1) {
+        return true;
+    }
+}
+
+function isFragment(item) {
+    if(item.icon.toLowerCase().indexOf('maps') !== -1) {
+        return true;
+    }
+}
+
+function isOil(item) {
+    if(item.icon.toLowerCase().indexOf('oils') !== -1) {
+        return true;
+    }
+}
+
+function isEssence(item) {
+    if (item.typeLine.indexOf('Essence') !== -1 || item.typeLine.indexOf('Remnant') !== -1 && item.icon.toLowerCase().indexOf('essence') !== -1) {
+        return true;
+    }
+}
+
+function isFossil(item) {
+    if (item.typeLine.indexOf('Fossil') !== -1 && item.icon.toLowerCase().indexOf('delve') !== -1) {
+        return true;
+    }
+}
+
+function isResonator(item) {
+    if (item.typeLine.indexOf('Resonator') !== -1 && item.icon.toLowerCase().indexOf('delve') !== -1) {
+        return true;
+    }
+}
+
+function isScarab(item) {
+    if (item.typeLine.indexOf('Scarab') !== -1 && item.icon.toLowerCase().indexOf('currency') !== -1) {
+        return true;
+    }
+}
+
+function isIncubator(item) {
+    if (item.typeLine.indexOf('Incubator') !== -1) {
+        return true;
+    }
+}
+
+function isCurrency(item, categoryOfItem) {
+    if(item.icon.toLowerCase().indexOf('currency') !== -1 && categoryOfItem === undefined) {
+        return true;
     }
 }

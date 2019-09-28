@@ -42,7 +42,6 @@ var lookupTable = {
 let requestApiForValues = (league, category) => new Promise((resolve, reject) => {
     // convert my category string to poe.ninja string
     let url;
-    console.log(category);
     category = lookupTable[category]();
 
     if(category === 'Fragment') {
@@ -86,4 +85,3 @@ module.exports = (organizedItems) => new Promise((resolve, reject) => {
         resolve([organizedItems, overviewOfItems]);
     });
 });
-
