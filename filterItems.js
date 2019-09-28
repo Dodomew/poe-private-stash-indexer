@@ -1,11 +1,8 @@
 const fs = require('fs');
 
 module.exports = (rawItems) => new Promise((resolve, reject) => {
-    // let data = JSON.stringify(rawItems[7]);
-    // fs.writeFileSync('allItems1.json', data);
-
     let dictionary = {};
-    let restrictedItemsArray = ['rings', 'belts', 'amulets', 'quivers', 'armours', 'weapons', 'jewels', 'gems'];
+    let restrictedItemsArray = ['rings', 'belts', 'amulets', 'quivers', 'armours', 'weapons', 'jewels'];
     let pleaseBreakOutOfLoop = false;
 
     for (let i = 0; i < rawItems.length; i++) {
@@ -35,6 +32,10 @@ module.exports = (rawItems) => new Promise((resolve, reject) => {
 
             if(!item.hasOwnProperty('category')) {
                 item.category = null;
+            }
+
+            if(isGem(item)) {
+                categoryOfItem = 'gems';
             }
 
             // prophecies have the currency category; i create prophecy category
@@ -84,7 +85,7 @@ module.exports = (rawItems) => new Promise((resolve, reject) => {
             }
 
             if(categoryOfItem === undefined) {
-                console.log(item.icon.toLowerCase());
+                continue;
             }
             if (!dictionary.hasOwnProperty(categoryOfItem)) {
                 dictionary[categoryOfItem] = [];
@@ -173,5 +174,16 @@ function isIncubator(item) {
 function isCurrency(item, categoryOfItem) {
     if(item.icon.toLowerCase().indexOf('currency') !== -1 && categoryOfItem === undefined) {
         return true;
+    }
+}
+
+function isGem(item) {
+    if(item.icon.toLowerCase().indexOf('gems') !== -1 && item.hasOwnProperty('support')) {
+        for (let i = 0; i < item.properties.length; i++) {
+            if(item.properties[i].name === 'Quality') {
+                item.quality = item.properties[i].values[0][0];
+                return true;
+            }
+        }
     }
 }

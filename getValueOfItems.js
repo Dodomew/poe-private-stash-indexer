@@ -36,13 +36,20 @@ var lookupTable = {
     },
     "oils": function () {
         return "Oil";
+    },
+    "gems": function() {
+        return "SkillGem";
     }
 };
 
-let requestApiForValues = (league, category) => new Promise((resolve, reject) => {
+let requestApiForValues = (league, category, gemQuality) => new Promise((resolve, reject) => {
     // convert my category string to poe.ninja string
     let url;
     category = lookupTable[category]();
+
+    if(category === 'SkillGem') {
+        url = 'https://poe.ninja/api/data/itemoverview?league=' + league + '&type=' + category + '?' + 'quality=' + gemQuality;
+    }
 
     if(category === 'Fragment') {
         url = 'https://poe.ninja/api/data/currencyoverview?league=' + league + '&type=' + category;
@@ -71,6 +78,18 @@ module.exports = (organizedItems) => new Promise((resolve, reject) => {
     for (let i = 0; i < categoryArray.length; i++) {
         let type = categoryArray[i];
         type = type.toLowerCase();
+
+        // if(type === 'gems') {
+        //     let itemsInArray = items['gems'];
+        //     for (let j = 0; j < itemsInArray.length; j++) {
+        //         let quality = itemsInArray[j].quality.match(/\d+/)[0]
+        //         allRequestPromises[i] = requestApiForValues('Blight', type, quality);
+        //     }
+        // }
+        // else {
+        //     allRequestPromises[i] = requestApiForValues('Blight', type);
+        // }
+
         allRequestPromises[i] = requestApiForValues('Blight', type);
     }
 
