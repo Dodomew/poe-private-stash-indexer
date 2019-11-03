@@ -8,7 +8,6 @@ const filterItems = require('./filterItems');
 const organizeItems = require('./organizeItems');
 const getValueOfItems = require('./getValueOfItems');
 const assignValueToItems = require('./assignValuesToItems');
-
 const path = require('path');
 
 // create application/x-www-form-urlencoded parser
@@ -30,10 +29,10 @@ app.post('/', urlencodedParser, (req, res) => {
     let sessionID = req.body.sessionID;
 
     /*
-        When we receive the POST data, we will fire this function which
-        fires a request for each tab the account has.
-        When it resolves, we have succesfully obtained an array, containing an array of objects,
-        where each object is a stash tab
+     When we receive the POST data, we will fire this function which
+     fires a request for each tab the account has.
+     When it resolves, we have succesfully obtained an array, containing an array of objects,
+     where each object is a stash tab
      */
 
     getItems(accountName, sessionID)
@@ -45,7 +44,11 @@ app.post('/', urlencodedParser, (req, res) => {
             res.render('result', {
                 organizedItems: organizedItems
             })
-        });
+        })
+        .catch(reason => {
+            console.log("reason: " + reason);
+            res.render('error', { reason: reason } );
+        } );
 });
 
 // 404
@@ -58,7 +61,11 @@ app.use(function(err, req, res, next) {
     return res.status(500).send({ error: err });
 });
 
-app.listen(3000);
+var port = process.env.PORT || 3001;
+
+app.listen(port, function () {
+    console.log('Server running at http://127.0.0.1:' + port + '/');
+});
 
 //general function to serve correct page based on request
 var servePage = function(url, response) {

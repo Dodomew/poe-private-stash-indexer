@@ -51,7 +51,7 @@ module.exports = (accountName, sessionID) => new Promise((resolve, reject) => {
 
         if (json) {
             if (json.error && json.error.code === 1) {
-                reject(new Error('League does not exist'));
+                reject(new Error('PoE generic api error'));
             }
         }
 

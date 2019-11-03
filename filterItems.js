@@ -1,8 +1,12 @@
 const fs = require('fs');
 
 module.exports = (rawItems) => new Promise((resolve, reject) => {
+    if(!rawItems) {
+        reject('rawItems is undefined');
+    }
+
     let dictionary = {};
-    let restrictedItemsArray = ['rings', 'belts', 'amulets', 'quivers', 'armours', 'weapons', 'jewels'];
+    let restrictedItemsArray = ['rings', 'belts', 'amulets', 'quivers', 'armours', 'weapons', 'jewels', 'gems'];
     let pleaseBreakOutOfLoop = false;
 
     for (let i = 0; i < rawItems.length; i++) {
@@ -34,9 +38,9 @@ module.exports = (rawItems) => new Promise((resolve, reject) => {
                 item.category = null;
             }
 
-            if(isGem(item)) {
-                categoryOfItem = 'gems';
-            }
+            // if(isGem(item)) {
+            //     categoryOfItem = 'gems';
+            // }
 
             // prophecies have the currency category; i create prophecy category
             if(isProphecy(item)) {
