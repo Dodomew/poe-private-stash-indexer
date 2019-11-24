@@ -1,5 +1,5 @@
 const request = require('request');
-const league = 'Blight';
+const league = process.env.LEAGUE;
 
 /*
     this function contains a promise which returns the data received from the request

@@ -1,4 +1,5 @@
 //Load various modules
+require('dotenv').config();
 const fs = require('fs');
 const express = require('express');
 const bodyParser = require('body-parser');
@@ -8,6 +9,7 @@ const filterItems = require('./filterItems');
 const organizeItems = require('./organizeItems');
 const getValueOfItems = require('./getValueOfItems');
 const assignValueToItems = require('./assignValuesToItems');
+const getRiver = require('./getRiver');
 const path = require('path');
 
 // create application/x-www-form-urlencoded parser
@@ -22,6 +24,7 @@ app.use(express.static(path.join(__dirname, 'public')));
 //homepage
 app.get('/', (req, res) => {
     servePage('/index.html', res);
+    getRiver();
 });
 
 app.post('/', urlencodedParser, (req, res) => {
