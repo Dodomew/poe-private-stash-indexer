@@ -21,10 +21,12 @@ app.set('view engine', 'ejs');
 //now we can serve static files, like .css
 app.use(express.static(path.join(__dirname, 'public')));
 
+//get POE river asap
+getRiver();
+
 //homepage
 app.get('/', (req, res) => {
     servePage('/index.html', res);
-    getRiver();
 });
 
 app.post('/', urlencodedParser, (req, res) => {

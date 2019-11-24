@@ -6,6 +6,7 @@ yarn-error.log
 .env
 
 # Editor directories and files
+*.json
 .idea
 *.suo
 *.ntvs*

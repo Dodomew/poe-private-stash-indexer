@@ -3,91 +3,96 @@ const rp = require('request-promise');
 const fs = require('fs');
 var nextChangeId = null;
 
-var options = {
-    uri: 'http://www.pathofexile.com/api/public-stash-tabs',
+var LastPublicIdOptions = {
+    uri: 'http://poe.ninja/api/Data/GetStats',
     json: true // Automatically parses the JSON string in the response
 };
 
-// let requestRiver = () => new Promise((resolve, reject) => {
-//     console.log('requestRiver')
-//     request({
-//             headers: {
-//                 Referer: 'https://www.pathofexile.com',
-//             },
-//             url: `http://www.pathofexile.com/api/public-stash-tabs`,
-//         },
-//         (error, response, body) => {
-//             if (error) {
-//                 reject(error);
-//             }
-//
-//             let parsedBody = JSON.parse(body);
-//
-//             nextChangeId = parsedBody.next_change_id;
-//             console.log('requestRiver ' + nextChangeId);
-//
-//             resolve();
-//             // fs.writeFileSync('stashes.json', body);
-//
-//             // return new Promise(function(resolve, reject) {
-//             //     fs.writeFile('stashes.json', body, function(err) {
-//             //         if (err) {
-//             //             reject(err);
-//             //         }
-//             //         else {
-//             //             console.log('resolve RequestRiver')
-//             //             resolve(body);
-//             //         }
-//             //     });
-//             // });
-//             //
-//             // (async () => {
-//             //     await fs.writeFile('stashes.json', body);
-//             // })();
-//         });
-// });
+function getDateOfToday() {
+    let date = new Date();
+    let dateDay = date.getDate();
+    let dateMonth = date.getMonth() + 1; //zero based
+    let dateYear = date.getFullYear();
+    return `${dateDay}_${dateMonth}_${dateYear}`;
+}
 
-let requestRiver = () => rp(options)
-    .then((parsedBody) => {
-        nextChangeId = parsedBody.next_change_id;
-        console.log(nextChangeId)
-    })
-    .catch(() => {
-        console.log('error')
-    })
+const appendFile = (path, data) => {
+    let AppendCount = 0;
+    let dateOfToday = getDateOfToday();
 
-let updateRiver = () => new Promise((resolve, reject) => {
-    console.log('updateRiver ' + nextChangeId)
-    let uri = `http://www.pathofexile.com/api/public-stash-tabs?id=${nextChangeId}`;
-    console.log(uri);
-    request({
-                headers: {
-                    Referer: 'https://www.pathofexile.com',
-                },
-                url: uri,
-            }, (error, response, body) => {
-        if (error) {
-            reject(error);
+    for (let i = 0; i < data.stashes.length; i++) {
+        let league = data.stashes[i].league;
+
+        if(league === null || league.toLowerCase() !== process.env.LEAGUE.toLowerCase()) {
+            //console.log('is not current league, skip')
+            continue;
         }
 
-        let parsedBody = JSON.parse(body);
+        if(data.stashes[i].accountName === null || data.stashes[i].stash === null || !data.stashes[i].items.length) {
+            //console.log('accountName or stashName is null');
+            continue;
+        }
 
-        nextChangeId = parsedBody.next_change_id;
-        console.log('updateRiver ' + nextChangeId);
-        fs.writeFile('updated_stashes.json', body, (err) => {
-            // If an error occurred, show it and return
-            if(err) {
-                return console.error(err);
+        let stashItems = data.stashes[i].items;
+
+        for (let j = 0; j < stashItems.length; j++) {
+            let item = stashItems[j];
+            if(item.extended.category === 'jewels') {
+                let itemObj = {
+                    id: item.id,
+                    mods: item.explicitMods
+                };
+                AppendCount++;
+                fs.appendFileSync(path + dateOfToday + '.json', JSON.stringify(itemObj, null, 2), (err) => {
+                    if(err) {
+                        return console.error(err);
+                    }
+                });
             }
-            // Successfully wrote binary contents to the file!
-        });
-    });
+        }
+    }
+    console.log('appended ' + AppendCount +' jewels');
+};
+
+let getLastPublicId = () => rp(LastPublicIdOptions)
+    .then((parsedBody) => {
+        nextChangeId = parsedBody.next_change_id;
+
+        let riverOptions = {
+            uri: `http://www.pathofexile.com/api/public-stash-tabs?id=${nextChangeId}`,
+            json: true // Automatically parses the JSON string in the response
+        };
+
+        console.log('poeNinja nextId: ' + nextChangeId);
+        console.log(riverOptions.uri);
+
+        requestRiver(riverOptions);
+    })
+    .catch(() => {
+        console.log('error getLastPublicId')
+});
+
+let requestRiver = (riverOptions) => rp(riverOptions)
+    .then((parsedBody) => {
+        console.log('requestRiver before: ' + nextChangeId);
+        nextChangeId = parsedBody.next_change_id;
+        appendFile('jewels_', parsedBody);
+        // writeFile('stashes.json', parsedBody);
+        console.log('requestRiver nextId: ' + nextChangeId)
+        setTimeout(() => {
+            let riverOptions = {
+                uri: `http://www.pathofexile.com/api/public-stash-tabs?id=${nextChangeId}`,
+                json: true // Automatically parses the JSON string in the response
+            };
+
+            requestRiver(riverOptions);
+        }, 10000)
+    })
+    .catch((err) => {
+        console.log(err);
+        console.log('error requestRiver')
 });
 
 module.exports = () => new Promise((resolve, reject) => {
-    requestRiver();
-    setTimeout(function() {
-        updateRiver();
-    }, 5000)
-    //  requestRiver().then(updateRiver());
+    getLastPublicId();
 });
