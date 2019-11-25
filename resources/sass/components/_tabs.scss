@@ -1,11 +1,17 @@
 .tabs {
-    display: flex;
-    flex-flow: row wrap;
     z-index: 10;
-    background-color: $colorSecDark;
+    background-color: #4a6986;
     height: 100%;
     width: 100%;
     padding: 0 20px;
+
+    &__wrapper {
+        display: flex;
+        flex-flow: row wrap;
+        justify-content: center;
+        max-width: 1000px;
+        margin: 0 auto;
+    }
 }
 
 .tab {
@@ -37,6 +43,8 @@
         display: block;
         flex: 1 0 auto;
         padding-top: 100px;
+        max-width: 1000px;
+        margin: 0 auto;
     }
 
     &-sort {
@@ -120,25 +128,22 @@
 
 @include media-query('desktop-sml') {
     .tabs {
-        max-width: 400px;
-        padding: 0 100px 0 0;
-        flex-flow: column nowrap;
-        justify-content: center;
+        position: fixed;
+        top: 0;
+        left: 0;
+        width: 100%;
+        padding: 30px;
+        height: auto;
     }
 
     .tab {
-        width: 100%;
+        width: auto;
 
         &-result {
-            padding: 0;
+            padding: 200px 0 0;
         }
 
         &-sort {
-            position: absolute;
-            top: 0;
-            left: 0;
-            transform: translateY(-100%);
-
             &-item {
                 padding: 12px 0 12px 10px;
 

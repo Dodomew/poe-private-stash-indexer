@@ -1,11 +1,29 @@
+const fs = require('fs');
+
 module.exports = (organizedItems, itemsWithValue) => new Promise((resolve, reject) => {
     let poeNinjaArray = itemsWithValue;
     let organizedItemsArray = Object.values(organizedItems);
+
+    // fs.writeFile(
+    //
+    //     './poeninja.json',
+    //
+    //     JSON.stringify(poeNinjaArray, null, 1),
+    //
+    //     function (err) {
+    //         if (err) {
+    //             console.error('Crap happens');
+    //         }
+    //     }
+    // );
 
     //get my item, then find that item in poeNinja
     for (let i = 0; i < organizedItemsArray.length; i++) {
         for (let j = 0; j < organizedItemsArray[i].length; j++) {
             let item = organizedItemsArray[i][j];
+            if(item.category === 'jewels') {
+                continue;
+            }
             findItemInPoeNinjaArray(item, poeNinjaArray, i);
         }
     }
@@ -42,7 +60,15 @@ function findItemInPoeNinjaArray(item, poeNinjaArray, startIndex) {
 
     for (let i = startIndex; i < poeNinjaArray.length; i++) {
         let obj = poeNinjaArray[i];
-        let innerObj = obj.lines;
+        let innerObj = null;
+
+        try {
+            innerObj = obj.lines;
+        }
+        catch (e) {
+            console.log(obj)
+            console.log(e);
+        }
 
         for (let j = 0; j < innerObj.length; j++) {
             let poeNinjaItemName;

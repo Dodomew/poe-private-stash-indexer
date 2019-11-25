@@ -15,18 +15,20 @@
                 <% let category = Object.keys(organizedItems); %>
 
                 <div class="tabs">
-                    <% for(let i = 0; i < items.length; i++) {%>
-                    <div class="tab">
-                        <input type="radio" name="tab" id="tab--<%=i%>" class="tab__input js-tab-input"
-                        <% if(i === 0) {%>
-                               checked
-                                <%}%>
-                        >
-                        <label for="tab--<%=i%>" class="tab__label">
-                            <%= category[i] %>
-                        </label>
+                    <div class="tabs__wrapper">
+                        <% for(let i = 0; i < items.length; i++) {%>
+                        <div class="tab">
+                            <input type="radio" name="tab" id="tab--<%=i%>" class="tab__input js-tab-input"
+                            <% if(i === 0) {%>
+                                   checked
+                                    <%}%>
+                            >
+                            <label for="tab--<%=i%>" class="tab__label">
+                                <%= category[i] %>
+                            </label>
+                        </div>
+                        <% } %>
                     </div>
-                    <% } %>
                 </div>
                 <div class="tab-result">
                     <ul class="tab-sort">
@@ -56,24 +58,41 @@
                                         <li class="list-item"
                                             data-name="<%= item.typeLine %>"
                                             data-value="<%= item.chaosValue *  Math.round( item.stackSize * 100 ) / 100 %>">
-                                            <div class="list-item__media">
-                                                <img src="<%= item.icon %>" alt="<%= item.typeLine %>" class="list-item__img"/>
+                                            <div class="list-item__content">
+                                                <div class="list-item__media">
+                                                    <img src="<%= item.icon %>" alt="<%= item.typeLine %>" class="list-item__img"/>
+                                                </div>
+                                                <div class="list-item__meta">
+                                                    <p class="list-item__amount">
+                                                        <% if (!item.stackSize) { %>
+                                                            x1
+                                                        <% } else { %>
+                                                            x<%= item.stackSize %>
+                                                        <% } %>
+                                                    </p>
+                                                    <h3 class="list-item__name js-item-name">
+                                                        <% if (item.name !== "") { %>
+                                                            <%= item.name %>
+                                                        <% } else { %>
+                                                            <%= item.typeLine %>
+                                                        <% } %>
+                                                    </h3>
+                                                    <h4 class="list-item__value js-item-value">
+                                                        <%= item.chaosValue %> / <%= Math.round(item.chaosValue *  item.stackSize * 100) / 100 %>
+                                                    </h4>
+                                                </div>
                                             </div>
-                                            <div class="list-item__meta">
-                                                <p class="list-item__amount">
-                                                    <% if (!item.stackSize) { %>
-                                                        x1
-                                                    <% } else { %>
-                                                        x<%= item.stackSize %>
-                                                    <% } %>
-                                                </p>
-                                                <h3 class="list-item__name js-item-name">
-                                                    <%= item.typeLine %>
-                                                </h3>
-                                                <h4 class="list-item__value js-item-value">
-                                                    <%= item.chaosValue %> / <%= Math.round(item.chaosValue *  item.stackSize * 100) / 100 %>
-                                                </h4>
-                                            </div>
+                                            <% if(item.explicitMods) { %>
+                                                <div class="list-item__mods js-accordion">
+                                                    <ul>
+                                                        <% for(let k = 0; k < item.explicitMods.length; k++) {%>
+                                                            <li>
+                                                                <%= item.explicitMods[k] %>
+                                                            </li>
+                                                        <% } %>
+                                                    </ul>
+                                                </div>
+                                            <% } %>
                                         </li>
                                     <% } %>
                                 <% } %>

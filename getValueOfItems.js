@@ -1,3 +1,4 @@
+const helper = require('./helper');
 const request = require('request');
 
 var lookupTable = {
@@ -39,17 +40,16 @@ var lookupTable = {
     },
     "gems": function() {
         return "SkillGem";
+    },
+    "jewels": function () {
+        return "Jewels"
     }
 };
 
-let requestApiForValues = (league, category, gemQuality) => new Promise((resolve, reject) => {
+let requestApiForValues = (league, category) => new Promise((resolve, reject) => {
     // convert my category string to poe.ninja string
     let url;
     category = lookupTable[category]();
-
-    if(category === 'SkillGem') {
-        url = 'https://poe.ninja/api/data/itemoverview?league=' + league + '&type=' + category + '?' + 'quality=' + gemQuality;
-    }
 
     if(category === 'Fragment') {
         url = 'https://poe.ninja/api/data/currencyoverview?league=' + league + '&type=' + category;
@@ -71,7 +71,7 @@ let requestApiForValues = (league, category, gemQuality) => new Promise((resolve
 
 module.exports = (organizedItems) => new Promise((resolve, reject) => {
     let items = organizedItems;
-    let overviewOfItems = [];
+    let poeNinjaItemsArray = [];
     let categoryArray = Object.keys(items);
     let allRequestPromises = [];
 
@@ -79,18 +79,12 @@ module.exports = (organizedItems) => new Promise((resolve, reject) => {
         let type = categoryArray[i];
         type = type.toLowerCase();
 
-        // if(type === 'gems') {
-        //     let itemsInArray = items['gems'];
-        //     for (let j = 0; j < itemsInArray.length; j++) {
-        //         let quality = itemsInArray[j].quality.match(/\d+/)[0]
-        //         allRequestPromises[i] = requestApiForValues('Blight', type, quality);
-        //     }
-        // }
-        // else {
-        //     allRequestPromises[i] = requestApiForValues('Blight', type);
-        // }
-
-        allRequestPromises[i] = requestApiForValues('Blight', type);
+        if(type === 'jewels') {
+            allRequestPromises[i] = { lines: items[type] };
+            console.log(allRequestPromises[i].lines[0]);
+            continue;
+        }
+        allRequestPromises[i] = requestApiForValues( helper.capitalize(process.env.LEAGUE), type);
     }
 
     /*
@@ -98,9 +92,9 @@ module.exports = (organizedItems) => new Promise((resolve, reject) => {
      we can resolve the getItems() and return the data for further use
      */
     Promise.all(allRequestPromises).then(function(values) {
-        values.forEach((category) => {
-            overviewOfItems.push(category);
+        values.forEach((categoryAsJsonObj) => {
+            poeNinjaItemsArray.push(categoryAsJsonObj);
         });
-        resolve([organizedItems, overviewOfItems]);
+        resolve([organizedItems, poeNinjaItemsArray]);
     });
 });

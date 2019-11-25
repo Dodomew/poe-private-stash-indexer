@@ -1,3 +1,4 @@
+const helper = require('./helper');
 const request = require('request');
 const rp = require('request-promise');
 const fs = require('fs');
@@ -8,17 +9,9 @@ var LastPublicIdOptions = {
     json: true // Automatically parses the JSON string in the response
 };
 
-function getDateOfToday() {
-    let date = new Date();
-    let dateDay = date.getDate();
-    let dateMonth = date.getMonth() + 1; //zero based
-    let dateYear = date.getFullYear();
-    return `${dateDay}_${dateMonth}_${dateYear}`;
-}
-
 const appendFile = (path, data) => {
     let AppendCount = 0;
-    let dateOfToday = getDateOfToday();
+    let dateOfToday = helper.getDateOfToday();
 
     for (let i = 0; i < data.stashes.length; i++) {
         let league = data.stashes[i].league;
@@ -77,7 +70,6 @@ let requestRiver = (riverOptions) => rp(riverOptions)
         console.log('requestRiver before: ' + nextChangeId);
         nextChangeId = parsedBody.next_change_id;
         appendFile('jewels_', parsedBody);
-        // writeFile('stashes.json', parsedBody);
         console.log('requestRiver nextId: ' + nextChangeId)
         setTimeout(() => {
             let riverOptions = {

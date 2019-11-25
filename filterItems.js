@@ -6,7 +6,7 @@ module.exports = (rawItems) => new Promise((resolve, reject) => {
     }
 
     let dictionary = {};
-    let restrictedItemsArray = ['rings', 'belts', 'amulets', 'quivers', 'armours', 'weapons', 'jewels', 'gems'];
+    let restrictedItemsArray = ['rings', 'belts', 'amulets', 'quivers', 'armours', 'weapons', 'gems'];
     let pleaseBreakOutOfLoop = false;
 
     for (let i = 0; i < rawItems.length; i++) {
@@ -38,60 +38,62 @@ module.exports = (rawItems) => new Promise((resolve, reject) => {
                 item.category = null;
             }
 
-            // if(isGem(item)) {
-            //     categoryOfItem = 'gems';
-            // }
+            if(isJewel(item)) {
+                categoryOfItem = 'jewels';
+                item.chaosValue = 1;
+            }
 
             // prophecies have the currency category; i create prophecy category
-            if(isProphecy(item)) {
+            else if(isProphecy(item)) {
                 categoryOfItem = 'prophecies';
             }
 
             //breach splinter is no longer a fragment, but currency (poeninja)
-            if(isBreachSplinter(item)) {
+            else if(isBreachSplinter(item)) {
                 categoryOfItem = 'currency';
             }
 
-            if(isDivCard(item)) {
+            else if(isDivCard(item)) {
                 categoryOfItem = 'divination cards';
             }
 
-            if(isFragment(item)) {
+            else if(isFragment(item)) {
                 categoryOfItem = 'fragments';
             }
 
-            if(isOil(item)) {
+            else if(isOil(item)) {
                 categoryOfItem = 'oils';
             }
 
-            if(isEssence(item)) {
+            else if(isEssence(item)) {
                 categoryOfItem = 'essences';
             }
 
-            if(isFossil(item)) {
+            else if(isFossil(item)) {
                 categoryOfItem = 'fossils';
             }
 
-            if(isResonator(item)) {
+            else if(isResonator(item)) {
                 categoryOfItem = 'resonators';
             }
 
-            if(isScarab(item)) {
+            else if(isScarab(item)) {
                 categoryOfItem = 'scarabs';
             }
 
-            if(isIncubator(item)) {
+            else if(isIncubator(item)) {
                 categoryOfItem = 'incubator';
             }
 
-            if(isCurrency(item, categoryOfItem)) {
+            else if(isCurrency(item, categoryOfItem)) {
                 categoryOfItem = 'currency';
             }
 
-            if(categoryOfItem === undefined) {
+            else if(categoryOfItem === undefined) {
                 continue;
             }
-            if (!dictionary.hasOwnProperty(categoryOfItem)) {
+
+            if(!dictionary.hasOwnProperty(categoryOfItem)) {
                 dictionary[categoryOfItem] = [];
             }
 
@@ -109,7 +111,7 @@ function isBreachSplinter(item) {
         'splinter of uul-netol',
         'splinter of tul',
         'splinter of chayula',
-        'splinter of zoph'
+        'splinter of xoph'
     ];
 
     let nameOfItem = item.typeLine.toLowerCase();
@@ -128,7 +130,7 @@ function isProphecy(item) {
 }
 
 function isDivCard(item) {
-    if(item.icon.toLowerCase().indexOf('divination') !== -1) {
+    if(item.icon.toLowerCase().indexOf('divination') !== -1 && item.icon.toLowerCase().indexOf('scarab') === -1) {
         return true;
     }
 }
@@ -175,19 +177,14 @@ function isIncubator(item) {
     }
 }
 
-function isCurrency(item, categoryOfItem) {
-    if(item.icon.toLowerCase().indexOf('currency') !== -1 && categoryOfItem === undefined) {
+function isJewel(item) {
+    if(item.icon.toLowerCase().indexOf('jewels') !== -1) {
         return true;
     }
 }
 
-function isGem(item) {
-    if(item.icon.toLowerCase().indexOf('gems') !== -1 && item.hasOwnProperty('support')) {
-        for (let i = 0; i < item.properties.length; i++) {
-            if(item.properties[i].name === 'Quality') {
-                item.quality = item.properties[i].values[0][0];
-                return true;
-            }
-        }
+function isCurrency(item, categoryOfItem) {
+    if(item.icon.toLowerCase().indexOf('currency') !== -1 && categoryOfItem === undefined) {
+        return true;
     }
 }
