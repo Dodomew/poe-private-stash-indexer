@@ -25,9 +25,16 @@
             align-items: center;
         }
 
+        &__text {
+            flex: 1 0 auto;
+            display: flex;
+            flex-flow: row nowrap;
+            justify-content: flex-start;
+        }
+
         &__name {
             font-size: 10px;
-            flex: 1 0 auto;
+            margin-right: 16px;
         }
 
         &__amount {
@@ -66,13 +73,20 @@
             font-size: 10px;
         }
 
-        &__mods {
+        &__byline {
             overflow: hidden;
-            max-height: 0 !important;
+
+            &.is-closed {
+                max-height: 0 !important;
+            }
 
             &.is-expanded {
                 max-height: none !important;
             }
+        }
+
+        &__mods {
+            padding: 10px;
         }
     }
 }

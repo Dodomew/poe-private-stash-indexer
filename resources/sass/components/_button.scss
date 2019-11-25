@@ -24,6 +24,33 @@
 .btn {
     @include btn;
 
+    &--accordion {
+        width: 30px;
+        height: 30px;
+        background-color: $colorPriBase;
+        position: relative;
+
+        &::before,
+        &::after {
+            content: '';
+            position: absolute;
+            background-color: #fff;
+            top: 11px;
+            width: 4px;
+            height: 10px;
+        }
+
+        &::before {
+            left: 10px;
+            transform: rotate(45deg);
+        }
+
+        &::after {
+            right: 10px;
+            transform: rotate(-45deg);
+        }
+    }
+
     &--scroll {
         background-color: $colorPriBase;
         position: fixed;

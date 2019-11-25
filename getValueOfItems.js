@@ -81,7 +81,6 @@ module.exports = (organizedItems) => new Promise((resolve, reject) => {
 
         if(type === 'jewels') {
             allRequestPromises[i] = { lines: items[type] };
-            console.log(allRequestPromises[i].lines[0]);
             continue;
         }
         allRequestPromises[i] = requestApiForValues( helper.capitalize(process.env.LEAGUE), type);

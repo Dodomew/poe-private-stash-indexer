@@ -47,9 +47,18 @@ app.post('/', urlencodedParser, (req, res) => {
         .then((organizedItems) => getValueOfItems(organizedItems))
         .then((data) => assignValueToItems(data[0], data[1]))
         .then((organizedItems) => {
-            res.render('result', {
-                organizedItems: organizedItems
-            })
+            res.render('result',
+               {
+                   organizedItems: organizedItems
+               },
+               function(err, html) {
+                    if(err) {
+                        res.send(err)
+                    }
+                    else {
+                        res.send(html);
+                    }
+                })
         })
         .catch(reason => {
             console.log("reason: " + reason);

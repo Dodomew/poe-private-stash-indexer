@@ -138,6 +138,7 @@
 
     .tab {
         width: auto;
+        margin: 5px;
 
         &-result {
             padding: 200px 0 0;
@@ -170,8 +171,8 @@
         }
 
         &__label {
-            font-size: 26px;
-            padding: 14px 30px 15px;
+            font-size: 20px;
+            padding: 12px 20px 12px;
         }
     }
 }

@@ -19,6 +19,7 @@ function toggleContent(tabs, content) {
             for (let j = 0; j < content.length; j++) {
                 if(content[j] === contentToSetActive) {
                     contentToSetActive.classList.add('is-active');
+                    initAccordion(contentToSetActive);
                 }
                 else {
                     content[j].classList.remove('is-active');

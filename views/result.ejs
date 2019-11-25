@@ -70,23 +70,28 @@
                                                             x<%= item.stackSize %>
                                                         <% } %>
                                                     </p>
-                                                    <h3 class="list-item__name js-item-name">
-                                                        <% if (item.name !== "") { %>
-                                                            <%= item.name %>
-                                                        <% } else { %>
-                                                            <%= item.typeLine %>
+                                                    <div class="list-item__text">
+                                                        <h3 class="list-item__name js-item-name">
+                                                            <% if (item.name !== "") { %>
+                                                                <%= item.name %>
+                                                            <% } else { %>
+                                                                <%= item.typeLine %>
+                                                            <% } %>
+                                                        </h3>
+                                                        <% if(item.explicitMods) { %>
+                                                            <a href="#" class="btn btn--accordion"></a>
                                                         <% } %>
-                                                    </h3>
+                                                    </div>
                                                     <h4 class="list-item__value js-item-value">
                                                         <%= item.chaosValue %> / <%= Math.round(item.chaosValue *  item.stackSize * 100) / 100 %>
                                                     </h4>
                                                 </div>
                                             </div>
                                             <% if(item.explicitMods) { %>
-                                                <div class="list-item__mods js-accordion">
-                                                    <ul>
+                                                <div class="list-item__byline js-accordion">
+                                                    <ul class="list-item__mods">
                                                         <% for(let k = 0; k < item.explicitMods.length; k++) {%>
-                                                            <li>
+                                                            <li class="list-item__mod">
                                                                 <%= item.explicitMods[k] %>
                                                             </li>
                                                         <% } %>
