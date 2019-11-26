@@ -73,14 +73,14 @@
             font-size: 10px;
         }
 
-        &__byline {
+        &__accordion {
             overflow: hidden;
 
-            &.is-closed {
+            .is-closed & {
                 max-height: 0 !important;
             }
 
-            &.is-expanded {
+            .is-expanded & {
                 max-height: none !important;
             }
         }

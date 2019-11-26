@@ -40,7 +40,7 @@
                         </div>
                     </div>
                 </div>
-                <div class="tab-result">
+                <div class="result">
                     <% for(let i = 0; i < items.length; i++) {%>
                         <div class="content js-content<%= i === 0 ? ' is-active' : ''%> " data-category="<%= category[i]%>">
                             <ul class="list js-list">
@@ -49,7 +49,7 @@
                                     <% if (item.chaosValue === 0 || !item.chaosValue) { %>
                                         <% continue; %>
                                     <% } else { %>
-                                        <li class="list-item"
+                                        <li class="list-item js-list-item"
                                             data-name="<%= item.typeLine %>"
                                             data-value="<%= item.chaosValue *  Math.round( item.stackSize * 100 ) / 100 %>">
                                             <div class="list-item__content">
@@ -73,7 +73,7 @@
                                                             <% } %>
                                                         </h3>
                                                         <% if(item.explicitMods) { %>
-                                                            <a href="#" class="btn btn--accordion"></a>
+                                                            <button class="btn btn--accordion js-accordion-toggle"></button>
                                                         <% } %>
                                                     </div>
                                                     <h4 class="list-item__value js-item-value">
@@ -82,7 +82,7 @@
                                                 </div>
                                             </div>
                                             <% if(item.explicitMods) { %>
-                                                <div class="list-item__byline js-accordion">
+                                                <div class="list-item__accordion js-accordion">
                                                     <ul class="list-item__mods">
                                                         <% for(let k = 0; k < item.explicitMods.length; k++) {%>
                                                             <li class="list-item__mod">

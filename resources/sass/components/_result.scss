@@ -1,0 +1,10 @@
+.result {
+    position: relative;
+    display: block;
+    flex: 1 0 auto;
+    padding: 90px 20px;
+    max-width: 1000px;
+    margin: 0 auto;
+    min-height: 100vh;
+    background-color: $colorSecBase;
+}
