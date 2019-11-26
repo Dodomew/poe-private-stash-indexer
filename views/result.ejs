@@ -14,37 +14,33 @@
                 <% let items = Object.values(organizedItems); %>
                 <% let category = Object.keys(organizedItems); %>
 
-                <div class="tabs">
-                    <div class="tabs__wrapper">
-                        <label>
-                            Category
-                        </label>
-                        <select name="category" id="js-select-category">
-                            <% for(let i = 0; i < items.length; i++) {%>
-                                <option value="<%= category[i] %>">
-                                    <%= category[i] %>
-                                </option>
-                            <% } %>
-                        </select>
+                <div class="header">
+                    <div class="header__wrapper">
+                        <div class="header__category">
+                            <label class="header__label">
+                                Category
+                            </label>
+                            <select name="category" id="js-select-category" class="header__select">
+                                <% for(let i = 0; i < items.length; i++) {%>
+                                    <option value="<%= category[i] %>">
+                                        <%= category[i] %>
+                                    </option>
+                                <% } %>
+                            </select>
+                        </div>
+                        <div class="header__functions">
+                            <div class="header__sort">
+                                <button type="button" class="btn btn__sort btn__sort--name" id="js-sort-by-name-btn">
+                                    A - Z
+                                </button>
+                            </div>
+                            <div class="header__sort">
+                                <button type="button" class="btn btn__sort btn__sort--value" id="js-sort-by-value-btn"></button>
+                            </div>
+                        </div>
                     </div>
                 </div>
                 <div class="tab-result">
-                    <ul class="tab-sort">
-                        <li class="tab-sort-item">
-                            <div class="tab-sort-item__media"></div>
-                            <div class="tab-sort-item__meta">
-                                <p class="tab-sort-item__amount"></p>
-                                <div class="tab-sort-item__name">
-                                    <button type="button" class="tab-sort__btn" id="js-sort-by-name-btn">
-                                        A - Z
-                                    </button>
-                                </div>
-                                <div class="tab-sort-item__value">
-                                    <button type="button" class="tab-sort__btn" id="js-sort-by-value-btn"></button>
-                                </div>
-                            </div>
-                        </li>
-                    </ul>
                     <% for(let i = 0; i < items.length; i++) {%>
                         <div class="content js-content<%= i === 0 ? ' is-active' : ''%> " data-category="<%= category[i]%>">
                             <ul class="list js-list">

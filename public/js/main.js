@@ -181,7 +181,7 @@ function reverseString(str) {
     return str.split("").reverse().join("");
 }
 
-function initTabLogic() {
+function initSwitchCategoryLogic() {
     console.log('tablogic');
 
     let content = document.getElementsByClassName('js-content');
@@ -213,7 +213,7 @@ console.log('load in main');
 document.addEventListener("DOMContentLoaded",function(){
     console.log('dom loaded');
 
-    initTabLogic();
+    initSwitchCategoryLogic();
     initButtonLogic();
     initSortLogic();
 });

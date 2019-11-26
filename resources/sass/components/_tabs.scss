@@ -1,34 +1,4 @@
-.tabs {
-    z-index: 10;
-    background-color: #4a6986;
-    height: 100%;
-    width: 100%;
-    padding: 0 20px;
-
-    &__wrapper {
-        display: flex;
-        flex-flow: row wrap;
-        justify-content: center;
-        max-width: 1000px;
-        margin: 0 auto;
-    }
-}
-
 .tab {
-    text-align: center;
-    width: 50%;
-
-    & input {
-        display: none;
-
-        &:checked {
-            & + .tab__label {
-                background-color: $colorPriBase;
-                color: #fff;
-            }
-        }
-    }
-
     &__label {
         display: inherit;
         color: #fff;
@@ -42,9 +12,11 @@
         position: relative;
         display: block;
         flex: 1 0 auto;
-        padding-top: 100px;
+        padding: 100px 20px;
         max-width: 1000px;
         margin: 0 auto;
+        min-height: 100vh;
+        background-color: $colorSecBase;
     }
 
     &-sort {
@@ -76,43 +48,6 @@
             &__value {
                 margin: 0;
                 padding: 0;
-
-                .tab-sort__btn {
-                    padding: 16px 36px 17px 30px;
-                    background: #c96567 url('https://web.poecdn.com/image/Art/2DItems/Currency/CurrencyRerollRare.png?scale=1&w=1&h=1') no-repeat right;
-                    background-size: 30px;
-                    position: relative;
-
-                    &::before,
-                    &::after {
-                        content: '';
-                        position: absolute;
-                        background-color: #fff;
-                        top: 17px;
-                        width: 3px;
-                        height: 10px;
-                    }
-
-                    &::before {
-                        left: 22px;
-                        transform: rotate(45deg);
-                    }
-
-                    &::after {
-                        left: 17px;
-                        transform: rotate(-45deg);
-                    }
-
-                    &.is-active {
-                        &::before {
-                            left: 17px;
-                        }
-
-                        &::after {
-                            left: 22px;
-                        }
-                    }
-                }
             }
         }
 
@@ -128,21 +63,12 @@
 
 @include media-query('desktop-sml') {
     .tabs {
-        position: fixed;
-        top: 0;
-        left: 0;
-        width: 100%;
-        padding: 30px;
-        height: auto;
+
     }
 
     .tab {
         width: auto;
         margin: 5px;
-
-        &-result {
-            padding: 200px 0 0;
-        }
 
         &-sort {
             &-item {

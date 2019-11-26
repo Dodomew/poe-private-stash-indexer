@@ -15,7 +15,7 @@
         }
 
         &:nth-child(even) {
-            background-color: #23313e;
+            background-color: $colorSecDark;
         }
 
         &__content {

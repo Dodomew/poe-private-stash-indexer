@@ -24,6 +24,51 @@
 .btn {
     @include btn;
 
+    &__sort {
+        padding: 0 24px;
+        height: 50px;
+        min-width: 30px;
+        background-color: $colorPriBase;
+        position: relative;
+        color: #fff;
+        font-weight: bold;
+
+        &--value {
+            background: $colorPriBase url('https://web.poecdn.com/image/Art/2DItems/Currency/CurrencyRerollRare.png?scale=1&w=1&h=1') no-repeat 10px center;
+            background-size: 30px;
+
+            &::before,
+            &::after {
+                content: '';
+                position: absolute;
+                background-color: #fff;
+                top: 21px;
+                width: 4px;
+                height: 10px;
+            }
+
+            &::before {
+                right: 10px;
+                transform: rotate(45deg);
+            }
+
+            &::after {
+                right: 16px;
+                transform: rotate(-45deg);
+            }
+
+            &.is-active {
+                &::before {
+                    right: 16px;
+                }
+
+                &::after {
+                    right: 10px;
+                }
+            }
+        }
+    }
+
     &--accordion {
         width: 30px;
         height: 30px;

@@ -1,4 +1,4 @@
-function initTabLogic() {
+function initSwitchCategoryLogic() {
     console.log('tablogic');
 
     let content = document.getElementsByClassName('js-content');
