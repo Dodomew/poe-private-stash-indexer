@@ -16,18 +16,16 @@
 
                 <div class="tabs">
                     <div class="tabs__wrapper">
-                        <% for(let i = 0; i < items.length; i++) {%>
-                        <div class="tab">
-                            <input type="radio" name="tab" id="tab--<%=i%>" class="tab__input js-tab-input"
-                            <% if(i === 0) {%>
-                                   checked
-                                    <%}%>
-                            >
-                            <label for="tab--<%=i%>" class="tab__label">
-                                <%= category[i] %>
-                            </label>
-                        </div>
-                        <% } %>
+                        <label>
+                            Category
+                        </label>
+                        <select name="category" id="js-select-category">
+                            <% for(let i = 0; i < items.length; i++) {%>
+                                <option value="<%= category[i] %>">
+                                    <%= category[i] %>
+                                </option>
+                            <% } %>
+                        </select>
                     </div>
                 </div>
                 <div class="tab-result">

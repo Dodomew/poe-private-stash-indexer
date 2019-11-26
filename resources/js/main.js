@@ -1,8 +1,7 @@
 console.log('load in main');
 
 document.addEventListener("DOMContentLoaded",function(){
-    console.log('dom loaded')
-    document.body.style.opacity = 1;
+    console.log('dom loaded');
 
     initTabLogic();
     initButtonLogic();

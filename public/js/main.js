@@ -182,35 +182,28 @@ function reverseString(str) {
 }
 
 function initTabLogic() {
-    let tabs = document.getElementsByClassName('js-tab-input');
-    let content = document.getElementsByClassName('js-content');
+    console.log('tablogic');
 
-    for (let i = 0; i < tabs.length; i++) {
-        tabs[i].addEventListener('change', () => {
-            toggleContent(tabs, content);
-        }, false);
-    }
+    let content = document.getElementsByClassName('js-content');
+    let selectCategory = document.getElementById('js-select-category');
+    let currentCategory = selectCategory[selectCategory.selectedIndex].value;
+
+    toggleContent(currentCategory, content);
+
+    selectCategory.addEventListener('change', (e) => {
+        let selectedCategory = selectCategory[selectCategory.selectedIndex].value;
+        toggleContent(selectedCategory, content);
+    });
 }
 
-function toggleContent(tabs, content) {
-    for (let i = 0, length = tabs.length; i < length; i++)
-    {
-        if (tabs[i].checked)
-        {
-            let contentToSetActive = content[i];
-
-            for (let j = 0; j < content.length; j++) {
-                if(content[j] === contentToSetActive) {
-                    contentToSetActive.classList.add('is-active');
-                    initAccordion(contentToSetActive);
-                }
-                else {
-                    content[j].classList.remove('is-active');
-                }
-            }
-
-            // only one radio can be logically checked, don't check the rest
-            break;
+function toggleContent(selectedCategory, content) {
+    for (let j = 0; j < content.length; j++) {
+        if(content[j].dataset.category === selectedCategory) {
+            content[j].classList.add('is-active');
+            initAccordion(content[j]);
+        }
+        else {
+            content[j].classList.remove('is-active');
         }
     }
 }
@@ -218,8 +211,7 @@ function toggleContent(tabs, content) {
 console.log('load in main');
 
 document.addEventListener("DOMContentLoaded",function(){
-    console.log('dom loaded')
-    document.body.style.opacity = 1;
+    console.log('dom loaded');
 
     initTabLogic();
     initButtonLogic();
