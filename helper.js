@@ -11,7 +11,21 @@ const getDateOfToday = () => {
     return `${dateDay}_${dateMonth}_${dateYear}`;
 };
 
+const getDateOfYesterday = () => {
+    const today = new Date();
+    const yesterday = new Date(today);
+
+    yesterday.setDate(yesterday.getDate() - 1);
+    yesterday.toDateString();
+
+    let dateDay = yesterday.getDate();
+    let dateMonth = yesterday.getMonth() + 1; //zero based
+    let dateYear = yesterday.getFullYear();
+    return `${dateDay}_${dateMonth}_${dateYear}`;
+};
+
 module.exports = {
     capitalize,
-    getDateOfToday
+    getDateOfToday,
+    getDateOfYesterday
 };

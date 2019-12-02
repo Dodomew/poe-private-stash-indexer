@@ -38,6 +38,13 @@ module.exports = (rawItems) => new Promise((resolve, reject) => {
                 item.category = null;
             }
 
+            // split string with linebreak into array for easier looping in list in frontend
+            if(item.hasOwnProperty('explicitMods') && !isJewel(item)) {
+                let explicitMods = item.explicitMods;
+                explicitMods = explicitMods[0].split(/\r?\n/);
+                item.explicitMods = explicitMods;
+            }
+
             if(isJewel(item)) {
                 categoryOfItem = 'jewels';
                 item.chaosValue = 1;

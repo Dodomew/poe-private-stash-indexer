@@ -9,6 +9,7 @@ var LastPublicIdOptions = {
     json: true // Automatically parses the JSON string in the response
 };
 
+//create new file with date as base. Fill this with jewels of that date
 const appendFile = (path, data) => {
     let AppendCount = 0;
     let dateOfToday = helper.getDateOfToday();
@@ -36,7 +37,7 @@ const appendFile = (path, data) => {
                     mods: item.explicitMods
                 };
                 AppendCount++;
-                fs.appendFileSync(path + dateOfToday + '.json', JSON.stringify(itemObj, null, 2), (err) => {
+                fs.appendFileSync(path + dateOfToday + '.json', JSON.stringify(itemObj, null, 0), (err) => {
                     if(err) {
                         return console.error(err);
                     }

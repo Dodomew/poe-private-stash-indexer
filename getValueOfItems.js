@@ -1,5 +1,6 @@
 const helper = require('./helper');
 const request = require('request');
+const findMatchingRiverItems = require('./findMatchingRiverItems');
 
 var lookupTable = {
     "prophecies": function() {
@@ -81,6 +82,7 @@ module.exports = (organizedItems) => new Promise((resolve, reject) => {
 
         if(type === 'jewels') {
             allRequestPromises[i] = { lines: items[type] };
+            findMatchingRiverItems();
             continue;
         }
         allRequestPromises[i] = requestApiForValues( helper.capitalize(process.env.LEAGUE), type);
