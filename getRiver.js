@@ -34,18 +34,20 @@ const appendFile = (path, data) => {
             if(item.extended.category === 'jewels') {
                 let itemObj = {
                     id: item.id,
-                    mods: item.explicitMods
+                    explicitMods: item.explicitMods
                 };
                 AppendCount++;
-                fs.appendFileSync(path + dateOfToday + '.json', JSON.stringify(itemObj, null, 0), (err) => {
-                    if(err) {
-                        return console.error(err);
-                    }
-                });
+                // fs.appendFileSync(path + dateOfToday + '.json', JSON.stringify(itemObj, null, 0), (err) => {
+                //     if(err) {
+                //         return console.error(err);
+                //     }
+                // });
+                riverArray.push(itemObj);
             }
         }
     }
     console.log('appended ' + AppendCount +' jewels');
+    console.log(global.riverArray.length);
 };
 
 let getLastPublicId = () => rp(LastPublicIdOptions)

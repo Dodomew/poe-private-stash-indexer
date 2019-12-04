@@ -1,4 +1,4 @@
-const fs = require('fs');
+const findMatchingRiverItems = require('./findMatchingRiverItems');
 
 module.exports = (organizedItems, itemsWithValue) => new Promise((resolve, reject) => {
     let poeNinjaArray = itemsWithValue;
@@ -22,6 +22,7 @@ module.exports = (organizedItems, itemsWithValue) => new Promise((resolve, rejec
         for (let j = 0; j < organizedItemsArray[i].length; j++) {
             let item = organizedItemsArray[i][j];
             if(item.category === 'jewels') {
+                findMatchingRiverItems(item);
                 continue;
             }
             findItemInPoeNinjaArray(item, poeNinjaArray, i);

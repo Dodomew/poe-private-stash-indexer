@@ -13,6 +13,8 @@ const assignValueToItems = require('./assignValuesToItems');
 const getRiver = require('./getRiver');
 const path = require('path');
 
+global.riverArray = [];
+
 // create application/x-www-form-urlencoded parser
 let urlencodedParser = bodyParser.urlencoded({ extended: false })
 
