@@ -4,26 +4,42 @@ const rp = require('request-promise');
 const fs = require('fs');
 var nextChangeId = null;
 
+const moreThanEightHoursAgo = (itemDate) => {
+    const eightHours = 1000 * 60 * 60 * 8;
+    const eightHoursAgo = Date.now() - eightHours;
+    return itemDate < eightHoursAgo;
+};
+
 var LastPublicIdOptions = {
     uri: 'http://poe.ninja/api/Data/GetStats',
     json: true // Automatically parses the JSON string in the response
 };
 
-//create new file with date as base. Fill this with jewels of that date
-const appendFile = (path, data) => {
+const removeOldItemFromArray = () => {
+    for (let i = 0; i < global.riverArray.length; i++) {
+        let dateOfItem = global.riverArray[i].date;
+
+        if(moreThanEightHoursAgo(dateOfItem)) {
+            console.log('item is too old');
+            global.riverArray.splice(i, 1);
+        }
+        else {
+            break;
+        }
+    }
+};
+
+const pushItemToArray = (path, data) => {
     let AppendCount = 0;
-    let dateOfToday = helper.getDateOfToday();
 
     for (let i = 0; i < data.stashes.length; i++) {
         let league = data.stashes[i].league;
 
         if(league === null || league.toLowerCase() !== process.env.LEAGUE.toLowerCase()) {
-            //console.log('is not current league, skip')
             continue;
         }
 
         if(data.stashes[i].accountName === null || data.stashes[i].stash === null || !data.stashes[i].items.length) {
-            //console.log('accountName or stashName is null');
             continue;
         }
 
@@ -34,20 +50,17 @@ const appendFile = (path, data) => {
             if(item.extended.category === 'jewels') {
                 let itemObj = {
                     id: item.id,
-                    explicitMods: item.explicitMods
+                    explicitMods: item.explicitMods,
+                    date: Date.now()
                 };
                 AppendCount++;
-                // fs.appendFileSync(path + dateOfToday + '.json', JSON.stringify(itemObj, null, 0), (err) => {
-                //     if(err) {
-                //         return console.error(err);
-                //     }
-                // });
                 riverArray.push(itemObj);
             }
         }
     }
     console.log('appended ' + AppendCount +' jewels');
     console.log(global.riverArray.length);
+    removeOldItemFromArray();
 };
 
 let getLastPublicId = () => rp(LastPublicIdOptions)
@@ -72,7 +85,7 @@ let requestRiver = (riverOptions) => rp(riverOptions)
     .then((parsedBody) => {
         console.log('requestRiver before: ' + nextChangeId);
         nextChangeId = parsedBody.next_change_id;
-        appendFile('jewels_', parsedBody);
+        pushItemToArray('jewels_', parsedBody);
         console.log('requestRiver nextId: ' + nextChangeId)
         setTimeout(() => {
             let riverOptions = {
