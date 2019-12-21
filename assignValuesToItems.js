@@ -4,19 +4,6 @@ module.exports = (organizedItems, itemsWithValue) => new Promise((resolve, rejec
     let poeNinjaArray = itemsWithValue;
     let organizedItemsArray = Object.values(organizedItems);
 
-    // fs.writeFile(
-    //
-    //     './poeninja.json',
-    //
-    //     JSON.stringify(poeNinjaArray, null, 1),
-    //
-    //     function (err) {
-    //         if (err) {
-    //             console.error('Crap happens');
-    //         }
-    //     }
-    // );
-
     //get my item, then find that item in poeNinja
     for (let i = 0; i < organizedItemsArray.length; i++) {
         for (let j = 0; j < organizedItemsArray[i].length; j++) {

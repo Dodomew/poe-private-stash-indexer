@@ -1,6 +1,4 @@
 function initSwitchCategoryLogic() {
-    console.log('tablogic');
-
     let content = document.getElementsByClassName('js-content');
     let selectCategory = document.getElementById('js-select-category');
     let currentCategory = selectCategory[selectCategory.selectedIndex].value;
@@ -17,7 +15,11 @@ function toggleContent(selectedCategory, content) {
     for (let j = 0; j < content.length; j++) {
         if(content[j].dataset.category === selectedCategory) {
             content[j].classList.add('is-active');
-            initAccordion(content[j]);
+
+            if(!content[j].classList.contains('accordion-is-init')) {
+                initAccordion(content[j]);
+                content[j].classList.add('accordion-is-init');
+            }
         }
         else {
             content[j].classList.remove('is-active');

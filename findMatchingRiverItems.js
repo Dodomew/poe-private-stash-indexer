@@ -1,6 +1,6 @@
 const helper = require('./helper');
 const fs = require('fs');
-const {performance} = require('perf_hooks');
+const request = require('request');
 
 function hasNumber(myString) {
     return /\d/.test(myString);
@@ -85,25 +85,89 @@ function scoreJewel(myJewel, riverJewel) {
     let totalScore = {
         "matchingScore" : matchingScore,
         "differentScore" : differentScore,
-        "percentage": matchingScore / (matchingScore + 0.01 + differentScore)
+        "percentage": matchingScore / (matchingScore + 0.01 + differentScore) //no divide by 0 plz
     };
 
     return totalScore;
 }
 
+let getMatchingRiverJewelInfo = (riverJewel) => new Promise((resolve, reject) => {
+    let url = "https://www.pathofexile.com/api/trade/fetch/";
+    let id = riverJewel.id;
+
+    url = url + '' + id;
+
+    console.log(url)
+
+    request({
+        url: url,
+    },
+    (error, response, body) => {
+        if (error) {
+            reject(error);
+        }
+
+        resolve(JSON.parse(body));
+    });
+});
+
 module.exports = (item) => new Promise((resolve, reject) => {
     let jewel = item;
+    let riverJewelsArray = [];
+    let riverJewelApiCalls = [];
 
     for (let i = 0; i < global.riverArray.length; i++) {
         let riverJewel = global.riverArray[i];
 
-        let score = scoreJewel(jewel, riverJewel);
+        if(!riverJewel.hasOwnProperty('score')) {
+            let score = scoreJewel(jewel, riverJewel);
 
-        if(score.percentage > 0.8) {
-            riverJewel.score = score;
+            if(score.percentage > 0.8) {
+                riverJewel.score = score;
 
-            console.log(JSON.stringify(item) + ',');
-            console.log(JSON.stringify(riverJewel) + ',');
+                // console.log(JSON.stringify(riverJewel) + ',');
+                // console.log(JSON.stringify(item) + ',');
+
+                if(riverJewelsArray.length > 10) {
+                    continue;
+                }
+                else {
+                    riverJewelsArray.push(riverJewel);
+                }
+            }
         }
     }
+
+    for (let i = 0; i < riverJewelsArray.length; i++) {
+        riverJewelApiCalls[i] = getMatchingRiverJewelInfo(riverJewelsArray[i]);
+    }
+
+    Promise.all(riverJewelApiCalls).then(function(requestedRiverItems) {
+        let priceArray = [];
+        let medianPrice = 0;
+
+        requestedRiverItems.forEach((requestedRiverItem) => {
+            if(requestedRiverItem.result[0].listing.price !== null) {
+                let requestedRiverInfo = requestedRiverItem.result[0].listing.price;
+                let currency = requestedRiverInfo.currency;
+
+                if(currency === 'chaos') {
+                    let amount = requestedRiverInfo.amount;
+                    jewel.currencyType = currency;
+                    jewel.currencyAmount = amount;
+
+                    priceArray.push(amount);
+                }
+            }
+        });
+
+        console.log(priceArray.length)
+
+        for (let i = 0; i < priceArray.length; i++) {
+            medianPrice += priceArray[i];
+        }
+
+        // console.log(medianPrice);
+        resolve(requestedRiverItems);
+    });
 });

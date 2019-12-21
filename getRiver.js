@@ -20,7 +20,6 @@ const removeOldItemFromArray = () => {
         let dateOfItem = global.riverArray[i].date;
 
         if(moreThanEightHoursAgo(dateOfItem)) {
-            console.log('item is too old');
             global.riverArray.splice(i, 1);
         }
         else {
