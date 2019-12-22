@@ -104,7 +104,7 @@ let getMatchingRiverJewelInfo = (riverJewel) => new Promise((resolve, reject) =>
     },
     (error, response, body) => {
         if (error) {
-            reject(error);
+            resolve(error);
         }
 
         resolve(JSON.parse(body));
@@ -129,7 +129,7 @@ module.exports = (jewel) => new Promise((resolve, reject) => {
             // console.log(JSON.stringify(riverJewel) + ',');
             // console.log(JSON.stringify(item) + ',');
 
-            if(riverJewelsArray.length > 10) {
+            if(riverJewelsArray.length > 5) {
                 break;
             }
             else {
@@ -205,7 +205,7 @@ module.exports = (jewel) => new Promise((resolve, reject) => {
             if (!riverJewelsArray[i].hasOwnProperty("currencyAmount")) {
                 continue;
             }
-            console.log('currencyAmount: ' + riverJewelsArray[i].currencyAmount);
+            // console.log('currencyAmount: ' + riverJewelsArray[i].currencyAmount);
             averagePrice += riverJewelsArray[i].currencyAmount;
             goodJewels += 1;
         }

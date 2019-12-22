@@ -4,7 +4,7 @@ const rp = require('request-promise');
 const fs = require('fs');
 var nextChangeId = null;
 
-const moreThanEightHoursAgo = (itemDate) => {
+const removeOldItems = (itemDate) => {
     const second = 1000;
     const minute = 60;
     const hour = 60;
@@ -29,7 +29,7 @@ const removeOldItemFromArray = () => {
     for (let i = 0; i < global.riverArray.length; i++) {
         let dateOfItem = global.riverArray[i].date;
 
-        if(moreThanEightHoursAgo(dateOfItem)) {
+        if(removeOldItems(dateOfItem)) {
             itemCount++;
         }
         else {

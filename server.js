@@ -32,6 +32,22 @@ app.get('/', (req, res) => {
     servePage('/index.html', res);
 });
 
+app.get('/get-jewel', (req, res) => {
+    res.writeHead(200, {"Content-Type": "text/plain"});
+    res.end('got jewel');
+
+    /*
+        Steps:
+        - in AssignValueToItems.js, remove the promise around the jewel request function because this function will trigger
+        after page load now.
+        - After contentHasLoaded event, send ajax call to server to get the jewels
+        - In server, setInterval(?) to get value of my jewels by pattern matching river jewels and get their id's
+        - Then API call the ID's and get value and assign to my jewel
+        - Then send a batch of jewels, like 10, to frontend to render
+        - Continue this until all my jewels are done
+     */
+});
+
 app.post('/', urlencodedParser, (req, res) => {
     let accountName = req.body.accountName.toUpperCase();
     let sessionID = req.body.sessionID;
