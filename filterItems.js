@@ -47,7 +47,6 @@ module.exports = (rawItems) => new Promise((resolve, reject) => {
 
             if(isJewel(item)) {
                 categoryOfItem = 'jewels';
-                item.chaosValue = 1;
             }
 
             // prophecies have the currency category; i create prophecy category

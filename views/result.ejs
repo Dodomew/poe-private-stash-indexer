@@ -77,7 +77,10 @@
                                                         <% } %>
                                                     </div>
                                                     <h4 class="list-item__value js-item-value">
-                                                        <%= item.chaosValue %> / <%= Math.round(item.chaosValue *  item.stackSize * 100) / 100 %>
+                                                        <%= item.chaosValue %>
+                                                        <% if(item.stackSize) { %>
+                                                            / <%= Math.round(item.chaosValue *  item.stackSize * 100) / 100 %>
+                                                        <% } %>
                                                     </h4>
                                                 </div>
                                             </div>

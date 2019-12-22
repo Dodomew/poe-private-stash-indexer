@@ -3,23 +3,27 @@ const findMatchingRiverItems = require('./findMatchingRiverItems');
 module.exports = (organizedItems, itemsWithValue) => new Promise((resolve, reject) => {
     let poeNinjaArray = itemsWithValue;
     let organizedItemsArray = Object.values(organizedItems);
+    let jewelPromisesArray = [];
 
     //get my item, then find that item in poeNinja
     for (let i = 0; i < organizedItemsArray.length; i++) {
         for (let j = 0; j < organizedItemsArray[i].length; j++) {
             let item = organizedItemsArray[i][j];
             if(item.category === 'jewels') {
-                findMatchingRiverItems(item);
+                let promise = findMatchingRiverItems(item);
+                jewelPromisesArray.push(promise);
                 continue;
             }
             findItemInPoeNinjaArray(item, poeNinjaArray, i);
         }
     }
 
-    for (let i = 0; i < organizedItemsArray.length; i++) {
-        organizedItemsArray[i].sort(compare);
-    }
-    resolve(organizedItems);
+    Promise.all(jewelPromisesArray).then(() => {
+        for (let i = 0; i < organizedItemsArray.length; i++) {
+            organizedItemsArray[i].sort(compare);
+        }
+        resolve(organizedItems);
+    })
 });
 
 function compare(a, b) {

@@ -5,7 +5,11 @@ const fs = require('fs');
 var nextChangeId = null;
 
 const moreThanEightHoursAgo = (itemDate) => {
-    const eightHours = 1000 * 60 * 60 * 8;
+    const second = 1000;
+    const minute = 60;
+    const hour = 60;
+
+    const eightHours = second * minute * hour * 1;
     const eightHoursAgo = Date.now() - eightHours;
     return itemDate < eightHoursAgo;
 };
@@ -16,13 +20,21 @@ var LastPublicIdOptions = {
 };
 
 const removeOldItemFromArray = () => {
+    /*
+        Loop through entire river jewel array and check each jewel if they are older than 8 hours. If so,
+        remove from the array. This is to keep the array not too large and up to date.
+     */
+    let itemCount = 0;
+
     for (let i = 0; i < global.riverArray.length; i++) {
         let dateOfItem = global.riverArray[i].date;
 
         if(moreThanEightHoursAgo(dateOfItem)) {
-            global.riverArray.splice(i, 1);
+            itemCount++;
         }
         else {
+            global.riverArray.splice(0, itemCount);
+            console.log('removed '+ itemCount + ' items')
             break;
         }
     }

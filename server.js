@@ -49,6 +49,7 @@ app.post('/', urlencodedParser, (req, res) => {
         .then((organizedItems) => getValueOfItems(organizedItems))
         .then((data) => assignValueToItems(data[0], data[1]))
         .then((organizedItems) => {
+            console.log("returning result");
             res.render('result',
                {
                    organizedItems: organizedItems

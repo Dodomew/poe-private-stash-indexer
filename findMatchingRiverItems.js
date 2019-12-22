@@ -67,7 +67,7 @@ function scoreJewel(myJewel, riverJewel) {
                 // "+10 to Intelligence" vs "+10 to Strength" = bad, add greater penalty and skip
                 else {
                     if(!hasNumber(splitRiverMods[i])) {
-                        differentScore += penaltyScore
+                        differentScore += penaltyScore;
                         break;
                     }
                     else {
@@ -92,12 +92,12 @@ function scoreJewel(myJewel, riverJewel) {
 }
 
 let getMatchingRiverJewelInfo = (riverJewel) => new Promise((resolve, reject) => {
-    let url = "https://www.pathofexile.com/api/trade/fetch/";
+    let url = process.env.TRADE_API_FETCH_URL;
     let id = riverJewel.id;
 
     url = url + '' + id;
 
-    console.log(url)
+    console.log("Fetching: " + url)
 
     request({
         url: url,
@@ -111,63 +111,118 @@ let getMatchingRiverJewelInfo = (riverJewel) => new Promise((resolve, reject) =>
     });
 });
 
-module.exports = (item) => new Promise((resolve, reject) => {
-    let jewel = item;
+module.exports = (jewel) => new Promise((resolve, reject) => {
+
+    jewel.chaosValue = 42;
     let riverJewelsArray = [];
     let riverJewelApiCalls = [];
 
     for (let i = 0; i < global.riverArray.length; i++) {
         let riverJewel = global.riverArray[i];
 
-        if(!riverJewel.hasOwnProperty('score')) {
-            let score = scoreJewel(jewel, riverJewel);
+        let score = scoreJewel(jewel, riverJewel);
 
-            if(score.percentage > 0.8) {
-                riverJewel.score = score;
+        if(score.percentage > 0.8) {
+            //Dont save the score, this needs to be re evaluated every time
 
-                // console.log(JSON.stringify(riverJewel) + ',');
-                // console.log(JSON.stringify(item) + ',');
 
-                if(riverJewelsArray.length > 10) {
-                    continue;
-                }
-                else {
-                    riverJewelsArray.push(riverJewel);
-                }
+            // console.log(JSON.stringify(riverJewel) + ',');
+            // console.log(JSON.stringify(item) + ',');
+
+            if(riverJewelsArray.length > 10) {
+                break;
             }
+            else {
+                riverJewelsArray.push(riverJewel);
+            }
+        }
+        else if (score.percentage > 0.3)
+        {
+            // console.log("score: " + score.percentage);
+            // console.log(JSON.stringify(riverJewel) + ',');
+            // console.log(JSON.stringify(item) + ',');
+
         }
     }
 
+    console.log("Found " + riverJewelsArray.length + " matching jewels");
+
     for (let i = 0; i < riverJewelsArray.length; i++) {
-        riverJewelApiCalls[i] = getMatchingRiverJewelInfo(riverJewelsArray[i]);
+        if (!riverJewelsArray[i].hasOwnProperty("currencyAmount"))
+            riverJewelApiCalls.push(getMatchingRiverJewelInfo(riverJewelsArray[i]));
     }
 
     Promise.all(riverJewelApiCalls).then(function(requestedRiverItems) {
-        let priceArray = [];
-        let medianPrice = 0;
 
+        //Store api call results in object
         requestedRiverItems.forEach((requestedRiverItem) => {
+            // console.log(requestedRiverItem);
+            // console.log(requestedRiverItem.result[0].listing);
             if(requestedRiverItem.result[0].listing.price !== null) {
                 let requestedRiverInfo = requestedRiverItem.result[0].listing.price;
+                // console.log(requestedRiverInfo);
                 let currency = requestedRiverInfo.currency;
 
-                if(currency === 'chaos') {
-                    let amount = requestedRiverInfo.amount;
-                    jewel.currencyType = currency;
-                    jewel.currencyAmount = amount;
+                //find the same item in our local array.
+                // local array: riverJewelsArray
+                // we can do this by comparing the id hash
+                // requestedRiverItem.result[0].id === riverJewelsArray[i].id
 
-                    priceArray.push(amount);
+                for (let i = 0; i < riverJewelsArray.length; i++) {
+                    // console.log(requestedRiverItem.result[0].id);
+                    // console.log(riverJewelsArray[i].id);
+                    if(requestedRiverItem.result[0].id === riverJewelsArray[i].id) {
+                        let amount = requestedRiverInfo.amount;
+
+                        if(currency === 'chaos') {
+                            riverJewelsArray[i].currencyAmount = amount;
+                            //console.log("chaos: " + amount);
+                        }
+                        else if(currency === 'alch') {
+                            riverJewelsArray[i].currencyAmount = amount * 0.5; //1 chaos = 2 alch
+                            //console.log("alch: " + amount);
+                        }
+                        else if(currency === 'exa') {
+                            riverJewelsArray[i].currencyAmount = amount * 100; //1 chaos = 0.01exa
+                            //console.log("alch: " + amount);
+                        }
+                        else {
+                            //console.log(requestedRiverItem.result[0].listing);
+                        }
+                    }
                 }
+            }
+            else {
+
             }
         });
 
-        console.log(priceArray.length)
+        let averagePrice = 0;
+        let goodJewels = 0;
 
-        for (let i = 0; i < priceArray.length; i++) {
-            medianPrice += priceArray[i];
+        //Find average price
+        for (let i = 0; i < riverJewelsArray.length; i++) {
+            if (!riverJewelsArray[i].hasOwnProperty("currencyAmount")) {
+                continue;
+            }
+            console.log('currencyAmount: ' + riverJewelsArray[i].currencyAmount);
+            averagePrice += riverJewelsArray[i].currencyAmount;
+            goodJewels += 1;
         }
 
-        // console.log(medianPrice);
+        if(goodJewels > 0) {
+            // console.log('jewel.chaosValue 1: ' + jewel.chaosValue);
+            // console.log('avgPrice ' + averagePrice);
+            // console.log('goodJewels ' + goodJewels);
+            jewel.chaosValue =  Math.round( (averagePrice / goodJewels) * 10 ) / 10;
+            /*console.log('jewel.chaosValue 2: ' + jewel.chaosValue);*/
+        }
+        else
+        {
+            //otherwise this jewel will be shown while it does not have a price
+            jewel.chaosValue = 0;
+        }
+
         resolve(requestedRiverItems);
     });
 });
