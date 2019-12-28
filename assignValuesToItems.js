@@ -10,8 +10,9 @@ module.exports = (organizedItems, itemsWithValue) => new Promise((resolve, rejec
         for (let j = 0; j < organizedItemsArray[i].length; j++) {
             let item = organizedItemsArray[i][j];
             if(item.category === 'jewels') {
-                let promise = findMatchingRiverItems(item);
-                jewelPromisesArray.push(promise);
+                // let promise = findMatchingRiverItems(item);
+                // jewelPromisesArray.push(promise);
+                item.chaosValue = 1337;
                 continue;
             }
             findItemInPoeNinjaArray(item, poeNinjaArray, i);

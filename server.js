@@ -12,6 +12,8 @@ const getValueOfItems = require('./getValueOfItems');
 const assignValueToItems = require('./assignValuesToItems');
 const getRiver = require('./getRiver');
 const path = require('path');
+const findMatchingRiverItems = require('./findMatchingRiverItems');
+const request = require('request');
 
 global.riverArray = [];
 
@@ -32,21 +34,115 @@ app.get('/', (req, res) => {
     servePage('/index.html', res);
 });
 
-app.get('/get-jewel', (req, res) => {
-    res.writeHead(200, {"Content-Type": "text/plain"});
-    res.end('got jewel');
+/*
+    Expects jewel ID
+    Example: /get-jewel/281368213618246asdsad
+ */
+app.get('/get-jewel/:mod1', (req, res) => {
+    let mod1 = b64DecodeUnicode(req.params.mod1);
+
+    let mods = [mod1];
+
+    console.log('1337: ' + mods);
+
+    let jewel = buildJewel(mods);
+    findMatchingRiverItems(jewel)
+        .then(() => {
+            res.writeHead(200, {"Content-Type": "text/plain"});
+            res.end(JSON.stringify(jewel));
+        }).catch((error) => {
+        console.log(error);
+    });
+});
+
+app.get('/get-jewel/:mod1/:mod2', (req, res) => {
+    let mod1 = b64DecodeUnicode(req.params.mod1);
+    let mod2 = b64DecodeUnicode(req.params.mod2);
+
+    let mods = [mod1, mod2];
+
+    console.log('1338: ' + mods);
+
+    let jewel = buildJewel(mods);
+    findMatchingRiverItems(jewel)
+        .then(() => {
+            res.writeHead(200, {"Content-Type": "text/plain"});
+            res.end(JSON.stringify(jewel));
+        }).catch((error) => {
+        console.log(error);
+    });
+});
+
+app.get('/get-jewel/:mod1/:mod2/:mod3', (req, res) => {
+    let mod1 = b64DecodeUnicode(req.params.mod1);
+    let mod2 = b64DecodeUnicode(req.params.mod2);
+    let mod3 = b64DecodeUnicode(req.params.mod3);
+
+    let mods = [mod1, mod2, mod3];
+
+    console.log('1339: ' + mods);
+
+    let jewel = buildJewel(mods);
+    findMatchingRiverItems(jewel)
+        .then(() => {
+            res.writeHead(200, {"Content-Type": "text/plain"});
+            res.end(JSON.stringify(jewel));
+        }).catch((error) => {
+            console.log(error);
+    });
+});
+
+app.get('/get-jewel/:mod1/:mod2/:mod3/:mod4', (req, res) => {
+    let mod1 = b64DecodeUnicode(req.params.mod1);
+    let mod2 = b64DecodeUnicode(req.params.mod2);
+    let mod3 = b64DecodeUnicode(req.params.mod3);
+    let mod4 = b64DecodeUnicode(req.params.mod4);
+
+    let mods = [mod1, mod2, mod3, mod4];
+
+    console.log('1340: ' + mods);
+
+    let jewel = buildJewel(mods);
+    findMatchingRiverItems(jewel)
+        .then(() => {
+            res.writeHead(200, {"Content-Type": "text/plain"});
+            res.end(JSON.stringify(jewel));
+        }).catch((error) => {
+        console.log(error);
+    });
 
     /*
-        Steps:
-        - in AssignValueToItems.js, remove the promise around the jewel request function because this function will trigger
-        after page load now.
-        - After contentHasLoaded event, send ajax call to server to get the jewels
-        - In server, setInterval(?) to get value of my jewels by pattern matching river jewels and get their id's
-        - Then API call the ID's and get value and assign to my jewel
-        - Then send a batch of jewels, like 10, to frontend to render
-        - Continue this until all my jewels are done
+     Steps:
+     - in AssignValueToItems.js, remove the promise around the jewel request function because this function will trigger
+     after page load now.
+     - After contentHasLoaded event, send ajax call to server to get the jewels
+     - In server, setInterval(?) to get value of my jewels by pattern matching river jewels and get their id's
+     - Then API call the ID's and get value and assign to my jewel
+     - Then send a batch of jewels, like 10, to frontend to render
+     - Continue this until all my jewels are done
      */
 });
+
+function buildJewel(mods) {
+    let jewel = {
+        'explicitMods' : []
+    };
+
+    for (let i = 0; i < mods.length; i++) {
+        mods[i] = mods[i].replace(/_/g, ' ');
+        jewel.explicitMods.push(mods[i]);
+    }
+
+    console.log('buildJewel: ' + JSON.stringify(jewel));
+    return jewel;
+}
+
+// https://stackoverflow.com/questions/246801/how-can-you-encode-a-string-to-base64-in-javascript
+function b64DecodeUnicode(str) {
+    var b = new Buffer(str, 'base64')
+    var s = b.toString();
+    return s;
+}
 
 app.post('/', urlencodedParser, (req, res) => {
     let accountName = req.body.accountName.toUpperCase();

@@ -49,9 +49,10 @@
                                     <% if (item.chaosValue === 0 || !item.chaosValue) { %>
                                         <% continue; %>
                                     <% } else { %>
-                                        <li class="list-item js-list-item"
+                                        <li class="list-item js-list-item <% if(item.category === 'jewels') { %>js-is-jewel<% }%>"
                                             data-name="<%= item.typeLine %>"
-                                            data-value="<%= item.chaosValue *  Math.round( item.stackSize * 100 ) / 100 %>">
+                                            data-value="<%= item.chaosValue *  Math.round( item.stackSize * 100 ) / 100 %>"
+                                            data-id="<%= item.id %>">
                                             <div class="list-item__content">
                                                 <div class="list-item__media">
                                                     <img src="<%= item.icon %>" alt="<%= item.typeLine %>" class="list-item__img"/>
@@ -86,9 +87,9 @@
                                             </div>
                                             <% if(item.explicitMods) { %>
                                                 <div class="list-item__accordion js-accordion">
-                                                    <ul class="list-item__mods">
+                                                    <ul class="list-item__mods js-item-mods">
                                                         <% for(let k = 0; k < item.explicitMods.length; k++) {%>
-                                                            <li class="list-item__mod">
+                                                            <li class="list-item__mod js-item-mod">
                                                                 <%= item.explicitMods[k] %>
                                                             </li>
                                                         <% } %>
