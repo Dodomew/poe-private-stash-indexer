@@ -99,6 +99,7 @@ function updateItemValue(parent, string) {
     let valueElem = parent.querySelector('.js-item-value');
     let jewel = JSON.parse(string);
     valueElem.innerHTML = jewel.chaosValue;
+    parent.dataset.value = jewel.chaosValue;
 }
 
 // https://stackoverflow.com/questions/30106476/using-javascripts-atob-to-decode-base64-doesnt-properly-decode-utf-8-strings
