@@ -50,7 +50,11 @@
                                         <% continue; %>
                                     <% } else { %>
                                         <li class="list-item js-list-item <% if(item.category === 'jewels') { %>js-is-jewel<% }%>"
-                                            data-name="<%= item.typeLine %>"
+                                            data-name="<% if (item.name !== "") { %>
+                                                                <%= item.name %>
+                                                            <% } else { %>
+                                                                <%= item.typeLine %>
+                                                            <% } %>"
                                             data-value="<%= item.chaosValue *  Math.round( item.stackSize * 100 ) / 100 %>"
                                             data-id="<%= item.id %>">
                                             <div class="list-item__content">

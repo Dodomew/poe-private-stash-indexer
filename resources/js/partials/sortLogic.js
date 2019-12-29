@@ -26,6 +26,7 @@ function sortList(categoriesArray, typeToSort) {
     let currentList;
     let categoryIndex;
     let button;
+    let isOrderedLowToHigh;
 
     if(typeToSort === 'name') {
         button = document.getElementById('js-sort-by-name-btn');
@@ -33,6 +34,9 @@ function sortList(categoriesArray, typeToSort) {
     else {
         button = document.getElementById('js-sort-by-value-btn');
     }
+
+    //if is-active, then array is sorted from low to high
+    isOrderedLowToHigh = !button.classList.contains('is-active');
 
     //find the active list
     for (let i = 0; i < lists.length; i++) {
@@ -58,20 +62,21 @@ function sortList(categoriesArray, typeToSort) {
 
     //if categoriesSortedByNameArray/valueArray is null, that means we have not sorted the array yet
     //otherwise we will reverse the array
-    if(categoriesArray[categoryIndex] !== null) {
-        listArray.reverse();
-    }
-    else {
-        sortByType(listArray, typeToSort);
-        categoriesArray[categoryIndex] = true;
-    }
+    // if(categoriesArray[categoryIndex] !== null) {
+    //     listArray.reverse();
+    // }
+    // else {
+    //     sortByType(listArray, typeToSort, isOrderedLowToHigh);
+    //     categoriesArray[categoryIndex] = true;
+    // }
+
+    sortByType(listArray, typeToSort, isOrderedLowToHigh);
 
     if(typeToSort === 'name') {
         button.innerText = reverseString(button.innerText);
     }
-    else {
-        button.classList.toggle('is-active');
-    }
+
+    button.classList.toggle('is-active');
 
     //fill the cloned list node
     for (let i = 0; i < listArray.length; i++) {
@@ -82,7 +87,7 @@ function sortList(categoriesArray, typeToSort) {
     currentList.parentNode.replaceChild(clonedList, currentList);
 }
 
-function sortByType(array, type) {
+function sortByType(array, type, order) {
     array.sort(function(a, b) {
         let firstElem;
         let secondElem;
@@ -96,12 +101,23 @@ function sortByType(array, type) {
             secondElem = parseFloat(b.dataset.value);
         }
 
-        if(firstElem < secondElem) {
-            return -1;
-        }
+        if(order) {
+            if(firstElem < secondElem) {
+                return -1;
+            }
 
-        if(firstElem > secondElem) {
-            return 1;
+            if(firstElem > secondElem) {
+                return 1;
+            }
+        }
+        else {
+            if(firstElem < secondElem) {
+                return 1;
+            }
+
+            if(firstElem > secondElem) {
+                return -1;
+            }
         }
 
         return 0;

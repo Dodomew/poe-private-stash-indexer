@@ -1,4 +1,7 @@
 function initGetJewels() {
+    /*
+        for each jewel in the list, we will ajax request to get its mods and use that to request the poe trade api
+     */
     let jewelElems = document.getElementsByClassName('js-is-jewel');
     for (let i = 0; i < jewelElems.length; i++) {
 
@@ -23,10 +26,7 @@ function requestJewel(htmlElem, mods) {
         url += '/' + mods[i];
     }
 
-    // url = url.replace(/ /g, '_');
-
-    // console.log(url);
-
+    // make ajax request which we will fetch in server.js
     xmlhttp.open("GET","/get-jewel" + url, true);
 
     // listen for `error` event

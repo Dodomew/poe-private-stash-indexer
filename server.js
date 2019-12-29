@@ -35,8 +35,8 @@ app.get('/', (req, res) => {
 });
 
 /*
-    Expects jewel ID
-    Example: /get-jewel/281368213618246asdsad
+    Expects base64 encoded jewel mods
+    Example: /get-jewel/2ddfg81368213618246asdsad/38hndqshd020=
  */
 app.get('/get-jewel/:mod1', (req, res) => {
     let mod1 = b64DecodeUnicode(req.params.mod1);
@@ -123,27 +123,6 @@ app.get('/get-jewel/:mod1/:mod2/:mod3/:mod4', (req, res) => {
      */
 });
 
-function buildJewel(mods) {
-    let jewel = {
-        'explicitMods' : []
-    };
-
-    for (let i = 0; i < mods.length; i++) {
-        mods[i] = mods[i].replace(/_/g, ' ');
-        jewel.explicitMods.push(mods[i]);
-    }
-
-    console.log('buildJewel: ' + JSON.stringify(jewel));
-    return jewel;
-}
-
-// https://stackoverflow.com/questions/246801/how-can-you-encode-a-string-to-base64-in-javascript
-function b64DecodeUnicode(str) {
-    var b = new Buffer(str, 'base64')
-    var s = b.toString();
-    return s;
-}
-
 app.post('/', urlencodedParser, (req, res) => {
     let accountName = req.body.accountName.toUpperCase();
     let sessionID = req.body.sessionID;
@@ -205,3 +184,27 @@ var servePage = function(url, response) {
     });
     page.pipe(response);
 };
+
+function buildJewel(mods) {
+    /*
+     build a jewel obj for requesting trade api
+     */
+    let jewel = {
+        'explicitMods' : []
+    };
+
+    for (let i = 0; i < mods.length; i++) {
+        mods[i] = mods[i].replace(/_/g, ' ');
+        jewel.explicitMods.push(mods[i]);
+    }
+
+    console.log('buildJewel: ' + JSON.stringify(jewel));
+    return jewel;
+}
+
+// https://stackoverflow.com/questions/246801/how-can-you-encode-a-string-to-base64-in-javascript
+function b64DecodeUnicode(str) {
+    var b = new Buffer(str, 'base64')
+    var s = b.toString();
+    return s;
+}

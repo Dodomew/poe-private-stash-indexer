@@ -10,8 +10,8 @@ module.exports = (organizedItems, itemsWithValue) => new Promise((resolve, rejec
         for (let j = 0; j < organizedItemsArray[i].length; j++) {
             let item = organizedItemsArray[i][j];
             if(item.category === 'jewels') {
-                // let promise = findMatchingRiverItems(item);
-                // jewelPromisesArray.push(promise);
+                // we will request jewel value after everything has loaded
+                // because there might be a lot of jewels, so that's a lot of requests
                 item.chaosValue = 1337;
                 continue;
             }
