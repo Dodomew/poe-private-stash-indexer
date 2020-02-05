@@ -5,15 +5,18 @@ const fs = require('fs');
 const express = require('express');
 const bodyParser = require('body-parser');
 const ejs = require('ejs');
+const path = require('path');
+const request = require('request');
+
 const getItems = require('./getItems');
 const filterItems = require('./filterItems');
 const organizeItems = require('./organizeItems');
 const getValueOfItems = require('./getValueOfItems');
 const assignValueToItems = require('./assignValuesToItems');
 const getRiver = require('./getRiver');
-const path = require('path');
 const findMatchingRiverItems = require('./findMatchingRiverItems');
-const request = require('request');
+const getCurrentLeague = require('./getCurrentLeague');
+const getTradeApiItems = require('./getTradeApiItems');
 
 global.riverArray = [];
 
@@ -27,11 +30,19 @@ app.set('view engine', 'ejs');
 app.use(express.static(path.join(__dirname, 'public')));
 
 //get POE river asap
-getRiver();
+// getRiver();
+
+global.league = null;
 
 //homepage
 app.get('/', (req, res) => {
-    servePage('/index.html', res);
+    getCurrentLeague()
+        .then((currentLeague) => {
+            global.league = currentLeague;
+            console.log(global.league);
+            getTradeApiItems();
+            servePage('/index.html', res);
+        });
 });
 
 /*
