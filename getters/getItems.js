@@ -1,20 +1,12 @@
 const request = require('request');
-const league = process.env.LEAGUE;
 const EnvironmentVariables = require('../classes/EnvironmentVariables');
 
 let environmentVariables = new EnvironmentVariables().getInstance();
 
-setTimeout(() => {
-    console.log('setTimeOut')
-    let league = environmentVariables.getLeague()
-    console.log(league)
-    // console.log(environmentVariables.getStats())
-}, 3000)
-
 /*
     this function contains a promise which returns the data received from the request
  */
-let requestStashTab = (accountName, index, sessionID) => new Promise((resolve, reject) => {
+let requestStashTab = (accountName, index, sessionID, league) => new Promise((resolve, reject) => {
     request({
                 headers: {
                     Referer: 'https://www.pathofexile.com',
@@ -34,7 +26,7 @@ let requestStashTab = (accountName, index, sessionID) => new Promise((resolve, r
  */
 
 module.exports = (accountName, sessionID) => new Promise((resolve, reject) => {
-
+    let league = environmentVariables.getLeague();
     /*
         send out first request for accountname and all stashes it contains
      */
@@ -79,7 +71,7 @@ module.exports = (accountName, sessionID) => new Promise((resolve, reject) => {
         let allRequestPromises = [];
 
         for (let i = 0; i < amountOfTotalTabs; i++) {
-            let requestPromise = requestStashTab(accountName, i, sessionID);
+            let requestPromise = requestStashTab(accountName, i, sessionID, league);
             allRequestPromises[i] = requestPromise;
         }
 

@@ -1,5 +1,7 @@
 const request = require('request');
-// const getters = require('./getters');
+const EnvironmentVariables = require('../classes/EnvironmentVariables');
+
+let environmentVariables = new EnvironmentVariables().getInstance();
 
 /*
     1) For each item, request tradeAPIUrl with body = item
@@ -25,7 +27,8 @@ let item = {
 };
 
 let getTradeApiItems = () => new Promise((resolve, reject) => {
-    let tradeApiURL = `https://www.pathofexile.com/api/trade/search/${getters.league}`;
+    let league = environmentVariables.getLeague();
+    let tradeApiURL = `https://www.pathofexile.com/api/trade/search/${league}`;
 
     request({
                 url: tradeApiURL,

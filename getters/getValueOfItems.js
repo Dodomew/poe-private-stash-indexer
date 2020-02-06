@@ -1,6 +1,8 @@
 const helper = require('../helper/helper');
 const request = require('request');
-// const getters = require('./getters');
+const EnvironmentVariables = require('../classes/EnvironmentVariables');
+
+let environmentVariables = new EnvironmentVariables().getInstance();
 
 var lookupTable = {
     "prophecies": function() {
@@ -51,15 +53,14 @@ let requestApiForValues = (league, category) => new Promise((resolve, reject) =>
     // convert my category string to poe.ninja string
     let url;
     category = lookupTable[category]();
+    console.log(category)
 
-    if(category === 'Fragment') {
+    if(category === 'Fragment' || category === 'Currency') {
         url = 'https://poe.ninja/api/data/currencyoverview?league=' + league + '&type=' + category;
     }
     else {
         url = 'https://poe.ninja/api/data/itemoverview?league=' + league + '&type=' + category;
     }
-
-    console.log(url)
 
     request({
             url: url,
@@ -73,6 +74,7 @@ let requestApiForValues = (league, category) => new Promise((resolve, reject) =>
 });
 
 module.exports = (organizedItems) => new Promise((resolve, reject) => {
+    let league = environmentVariables.getLeague();
     let items = organizedItems;
     let poeNinjaItemsArray = [];
     let categoryArray = Object.keys(items);
@@ -86,7 +88,7 @@ module.exports = (organizedItems) => new Promise((resolve, reject) => {
             allRequestPromises[i] = { lines: items[type] };
             continue;
         }
-        allRequestPromises[i] = requestApiForValues( getters.league, type);
+        allRequestPromises[i] = requestApiForValues( league, type);
     }
 
     /*
