@@ -8,14 +8,14 @@ const ejs = require('ejs');
 const path = require('path');
 const request = require('request');
 
-const getItems = require('./getItems');
+const getItems = require('./getters/getItems');
 const filterItems = require('./filterItems');
 const organizeItems = require('./organizeItems');
-const getValueOfItems = require('./getValueOfItems');
+const getValueOfItems = require('./getters/getValueOfItems');
 const assignValueToItems = require('./assignValuesToItems');
-const getRiver = require('./getRiver');
+const getRiver = require('./getters/getRiver');
 const findMatchingRiverItems = require('./findMatchingRiverItems');
-const getTradeApiItems = require('./getTradeApiItems');
+const getTradeApiItems = require('./getters/getTradeApiItems');
 // const getters = require('./getters');
 const EnvironmentVariables = require('./classes/EnvironmentVariables');
 

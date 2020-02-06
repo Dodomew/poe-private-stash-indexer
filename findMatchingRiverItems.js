@@ -1,4 +1,4 @@
-const helper = require('./helper');
+const helper = require('./helper/helper');
 const fs = require('fs');
 const request = require('request');
 

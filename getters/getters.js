@@ -1,6 +1,6 @@
 const request = require('request');
 const getLeague = require('./getCurrentLeague');
-const getStats = require('./getAllStats');
+const getStats = require('./getAllExistingTradeModifiers');
 
 let league = getLeague.get();
 let stats = getStats.get();

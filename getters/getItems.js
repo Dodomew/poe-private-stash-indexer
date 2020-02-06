@@ -1,6 +1,6 @@
 const request = require('request');
 const league = process.env.LEAGUE;
-const EnvironmentVariables = require('./classes/EnvironmentVariables');
+const EnvironmentVariables = require('../classes/EnvironmentVariables');
 
 let environmentVariables = new EnvironmentVariables().getInstance();
 
