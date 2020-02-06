@@ -1,6 +1,5 @@
 const request = require('request');
-
-const stats = `https://www.pathofexile.com/api/trade/data/stats`;
+// const getters = require('./getters');
 
 /*
     1) For each item, request tradeAPIUrl with body = item
@@ -26,7 +25,7 @@ let item = {
 };
 
 let getTradeApiItems = () => new Promise((resolve, reject) => {
-    let tradeApiURL = `https://www.pathofexile.com/api/trade/search/${global.league}`;
+    let tradeApiURL = `https://www.pathofexile.com/api/trade/search/${getters.league}`;
 
     request({
                 url: tradeApiURL,
@@ -37,7 +36,7 @@ let getTradeApiItems = () => new Promise((resolve, reject) => {
         if (error) {
             reject(error);
         }
-        console.log(body)
+        // console.log(body)
 
         let id = body.id;
 
@@ -50,7 +49,7 @@ let getTradeApiItems = () => new Promise((resolve, reject) => {
             if (error) {
                 reject(error);
             }
-            console.log(body)
+            // console.log(body)
             resolve(body);
         });
     });

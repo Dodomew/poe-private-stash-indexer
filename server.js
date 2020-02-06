@@ -15,10 +15,14 @@ const getValueOfItems = require('./getValueOfItems');
 const assignValueToItems = require('./assignValuesToItems');
 const getRiver = require('./getRiver');
 const findMatchingRiverItems = require('./findMatchingRiverItems');
-const getCurrentLeague = require('./getCurrentLeague');
 const getTradeApiItems = require('./getTradeApiItems');
+// const getters = require('./getters');
+const EnvironmentVariables = require('./classes/EnvironmentVariables');
 
-global.riverArray = [];
+// global.riverArray = [];
+
+let league;
+let stats;
 
 // create application/x-www-form-urlencoded parser
 let urlencodedParser = bodyParser.urlencoded({ extended: false })
@@ -29,20 +33,29 @@ app.set('view engine', 'ejs');
 //now we can serve static files, like .css
 app.use(express.static(path.join(__dirname, 'public')));
 
+let environmentVariables = new EnvironmentVariables().getInstance();
+environmentVariables.getLeague();
+environmentVariables.getStats();
+
 //get POE river asap
 // getRiver();
 
-global.league = null;
+// async function initGetters() {
+//     console.log('awaiting...')
+//
+//     league = await getters.league;
+//     stats = await getters.stats;
+// }
+//
+// initGetters().then((dataObj) => {
+//     console.log('initGetters done')
+//     console.log(league);
+//     console.log(stats.result[0].label)
+// });
 
 //homepage
 app.get('/', (req, res) => {
-    getCurrentLeague()
-        .then((currentLeague) => {
-            global.league = currentLeague;
-            console.log(global.league);
-            getTradeApiItems();
-            servePage('/index.html', res);
-        });
+    servePage('/index.html', res);
 });
 
 /*
@@ -137,7 +150,7 @@ app.get('/get-jewel/:mod1/:mod2/:mod3/:mod4', (req, res) => {
 app.post('/', urlencodedParser, (req, res) => {
     let accountName = req.body.accountName.toUpperCase();
     let sessionID = req.body.sessionID;
-
+    console.log(league)
     /*
      When we receive the POST data, we will fire this function which
      fires a request for each tab the account has.

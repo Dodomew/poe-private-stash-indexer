@@ -1,5 +1,6 @@
 const helper = require('./helper');
 const request = require('request');
+// const getters = require('./getters');
 
 var lookupTable = {
     "prophecies": function() {
@@ -58,6 +59,8 @@ let requestApiForValues = (league, category) => new Promise((resolve, reject) =>
         url = 'https://poe.ninja/api/data/itemoverview?league=' + league + '&type=' + category;
     }
 
+    console.log(url)
+
     request({
             url: url,
         },
@@ -83,7 +86,7 @@ module.exports = (organizedItems) => new Promise((resolve, reject) => {
             allRequestPromises[i] = { lines: items[type] };
             continue;
         }
-        allRequestPromises[i] = requestApiForValues( helper.capitalize(process.env.LEAGUE), type);
+        allRequestPromises[i] = requestApiForValues( getters.league, type);
     }
 
     /*

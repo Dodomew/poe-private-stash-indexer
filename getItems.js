@@ -1,5 +1,15 @@
 const request = require('request');
 const league = process.env.LEAGUE;
+const EnvironmentVariables = require('./classes/EnvironmentVariables');
+
+let environmentVariables = new EnvironmentVariables().getInstance();
+
+setTimeout(() => {
+    console.log('setTimeOut')
+    let league = environmentVariables.getLeague()
+    console.log(league)
+    // console.log(environmentVariables.getStats())
+}, 3000)
 
 /*
     this function contains a promise which returns the data received from the request
