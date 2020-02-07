@@ -53,7 +53,6 @@ let requestApiForValues = (league, category) => new Promise((resolve, reject) =>
     // convert my category string to poe.ninja string
     let url;
     category = lookupTable[category]();
-    console.log(category)
 
     if(category === 'Fragment' || category === 'Currency') {
         url = 'https://poe.ninja/api/data/currencyoverview?league=' + league + '&type=' + category;

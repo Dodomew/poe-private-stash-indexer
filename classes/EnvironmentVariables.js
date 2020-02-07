@@ -36,6 +36,10 @@ class EnvironmentVariables {
         }
     }
 
+    replaceNumbersWithCharacter(str) {
+        return str.replace(/[0-9]+/g, '#');
+    }
+
     getStats() {
         console.log('EnvironmentVariables getStats')
         if(this.stats !== null) {
@@ -46,8 +50,29 @@ class EnvironmentVariables {
         console.log('await getAllStats');
         getAllStats.get().then((statsObj) => {
             this.stats = statsObj;
+            this.sanitizeStats();
             return this.stats;
         });
+    }
+
+    sanitizeStats() {
+        console.log('sanitizeStats start')
+        let statsArray = this.stats.result;
+        for (let i = 0; i < statsArray.length; i++) {
+            if(statsArray[i].label === 'Pseudo') {
+                continue;
+            }
+            let entries = statsArray[i].entries;
+            for (let j = 0; j < entries.length; j++) {
+                entries[j].text = this.replaceNumbersWithCharacter(entries[j].text);
+                // if(entries[j].text.includes('Onslaught')) {
+                //     console.log('onslaught');
+                // }
+            }
+        }
+
+        this.stats = statsArray;
+        console.log('sanitizeStats end')
     }
 }
 

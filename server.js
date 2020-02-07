@@ -13,12 +13,8 @@ const filterItems = require('./filterItems');
 const organizeItems = require('./organizeItems');
 const getValueOfItems = require('./getters/getValueOfItems');
 const assignValueToItems = require('./assignValuesToItems');
-const getRiver = require('./getters/getRiver');
-const findMatchingRiverItems = require('./findMatchingRiverItems');
-const getTradeApiItems = require('./getters/getTradeApiItems');
 const EnvironmentVariables = require('./classes/EnvironmentVariables');
-
-// global.riverArray = [];
+const getMatchingTradeApiModifiers = require('./getMatchingTradeApiModifiers');
 
 // create application/x-www-form-urlencoded parser
 let urlencodedParser = bodyParser.urlencoded({ extended: false })
@@ -50,16 +46,17 @@ app.get('/get-jewel/:mod1', (req, res) => {
 
     let mods = [mod1];
 
-    console.log('1337: ' + mods);
+    // console.log('1337: ' + mods);
 
     let jewel = buildJewel(mods);
-    findMatchingRiverItems(jewel)
-        .then(() => {
-            res.writeHead(200, {"Content-Type": "text/plain"});
-            res.end(JSON.stringify(jewel));
-        }).catch((error) => {
-        console.log(error);
-    });
+
+    // findMatchingRiverItems(jewel)
+    //     .then(() => {
+    //         res.writeHead(200, {"Content-Type": "text/plain"});
+    //         res.end(JSON.stringify(jewel));
+    //     }).catch((error) => {
+    //     console.log(error);
+    // });
 });
 
 app.get('/get-jewel/:mod1/:mod2', (req, res) => {
@@ -68,16 +65,17 @@ app.get('/get-jewel/:mod1/:mod2', (req, res) => {
 
     let mods = [mod1, mod2];
 
-    console.log('1338: ' + mods);
+    // console.log('1338: ' + mods);
 
     let jewel = buildJewel(mods);
-    findMatchingRiverItems(jewel)
-        .then(() => {
-            res.writeHead(200, {"Content-Type": "text/plain"});
-            res.end(JSON.stringify(jewel));
-        }).catch((error) => {
-        console.log(error);
-    });
+    // console.log(jewel);
+    // findMatchingRiverItems(jewel)
+    //     .then(() => {
+    //         res.writeHead(200, {"Content-Type": "text/plain"});
+    //         res.end(JSON.stringify(jewel));
+    //     }).catch((error) => {
+    //     console.log(error);
+    // });
 });
 
 app.get('/get-jewel/:mod1/:mod2/:mod3', (req, res) => {
@@ -87,16 +85,16 @@ app.get('/get-jewel/:mod1/:mod2/:mod3', (req, res) => {
 
     let mods = [mod1, mod2, mod3];
 
-    console.log('1339: ' + mods);
+    // console.log('1339: ' + mods);
 
     let jewel = buildJewel(mods);
-    findMatchingRiverItems(jewel)
-        .then(() => {
-            res.writeHead(200, {"Content-Type": "text/plain"});
-            res.end(JSON.stringify(jewel));
-        }).catch((error) => {
-            console.log(error);
-    });
+    // findMatchingRiverItems(jewel)
+    //     .then(() => {
+    //         res.writeHead(200, {"Content-Type": "text/plain"});
+    //         res.end(JSON.stringify(jewel));
+    //     }).catch((error) => {
+    //         console.log(error);
+    // });
 });
 
 app.get('/get-jewel/:mod1/:mod2/:mod3/:mod4', (req, res) => {
@@ -107,16 +105,18 @@ app.get('/get-jewel/:mod1/:mod2/:mod3/:mod4', (req, res) => {
 
     let mods = [mod1, mod2, mod3, mod4];
 
-    console.log('1340: ' + mods);
+    // console.log('1340: ' + mods);
 
     let jewel = buildJewel(mods);
-    findMatchingRiverItems(jewel)
-        .then(() => {
-            res.writeHead(200, {"Content-Type": "text/plain"});
-            res.end(JSON.stringify(jewel));
-        }).catch((error) => {
-        console.log(error);
-    });
+    // console.log(jewel);
+    getMatchingTradeApiModifiers.sanitizeJewel(jewel);
+    // findMatchingRiverItems(jewel)
+    //     .then(() => {
+    //         res.writeHead(200, {"Content-Type": "text/plain"});
+    //         res.end(JSON.stringify(jewel));
+    //     }).catch((error) => {
+    //     console.log(error);
+    // });
 
     /*
      Steps:
@@ -146,7 +146,6 @@ app.post('/', urlencodedParser, (req, res) => {
         .then((organizedItems) => getValueOfItems(organizedItems))
         .then((data) => assignValueToItems(data[0], data[1]))
         .then((organizedItems) => {
-            console.log("returning result");
             res.render('result',
                {
                    organizedItems: organizedItems
