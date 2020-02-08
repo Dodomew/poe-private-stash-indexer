@@ -109,7 +109,7 @@ app.get('/get-jewel/:mod1/:mod2/:mod3/:mod4', (req, res) => {
 
     let jewel = buildJewel(mods);
     // console.log(jewel);
-    getMatchingTradeApiModifiers.sanitizeJewel(jewel);
+    getMatchingTradeApiModifiers.prepJewelForTradeApi(jewel);
     // findMatchingRiverItems(jewel)
     //     .then(() => {
     //         res.writeHead(200, {"Content-Type": "text/plain"});
