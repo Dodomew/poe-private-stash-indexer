@@ -9,7 +9,7 @@ async function get (query) {
         return {response, body};
     }
 
-    let tradeApiResponse = JSON.parse(body);
+    let tradeApiResponse = body;
 
     console.log('getMatchingTradeApiModifiers');
     console.log(tradeApiResponse)
@@ -20,11 +20,13 @@ async function getMatchingTradeApiModifiers (query) {
     const league = environmentVariables.getLeague();
     const tradeApiURL = 'https://www.pathofexile.com/api/trade/search/' + league;
     console.log(tradeApiURL);
-    console.log(tradeApiURL + '?source=' + query);
+    console.log(tradeApiURL + '?source=' + JSON.stringify(query));
     return new Promise((resolve, reject) => {
         request({
-                    url: tradeApiURL + '?source=' + query,
-                    method: 'GET'
+                    url: tradeApiURL,
+                    method: 'POST',
+                    json: true,
+                    body: query
                 },
                 (error, response, body) => {
                     if (error) {
@@ -67,8 +69,7 @@ function buildJsonObjectForTradeApiSearch(myJewel) {
             "id" : myJewel.tradeModsIDs[i]
         };
     }
-
-    return JSON.stringify(jsonObj);
+    return jsonObj;
 }
 
 function findMatchingModID(myJewel) {
