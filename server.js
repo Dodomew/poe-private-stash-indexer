@@ -49,6 +49,7 @@ app.get('/get-jewel/:mod1', (req, res) => {
     // console.log('1337: ' + mods);
 
     let jewel = buildJewel(mods);
+    getMatchingTradeApiModifiers.prepJewelForTradeApi(jewel);
 
     // findMatchingRiverItems(jewel)
     //     .then(() => {
@@ -68,6 +69,7 @@ app.get('/get-jewel/:mod1/:mod2', (req, res) => {
     // console.log('1338: ' + mods);
 
     let jewel = buildJewel(mods);
+    getMatchingTradeApiModifiers.prepJewelForTradeApi(jewel);
     // console.log(jewel);
     // findMatchingRiverItems(jewel)
     //     .then(() => {
@@ -88,6 +90,7 @@ app.get('/get-jewel/:mod1/:mod2/:mod3', (req, res) => {
     // console.log('1339: ' + mods);
 
     let jewel = buildJewel(mods);
+    getMatchingTradeApiModifiers.prepJewelForTradeApi(jewel);
     // findMatchingRiverItems(jewel)
     //     .then(() => {
     //         res.writeHead(200, {"Content-Type": "text/plain"});
