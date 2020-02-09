@@ -98,6 +98,7 @@ function requestJewel(htmlElem, mods) {
 function updateItemValue(parent, string) {
     let valueElem = parent.querySelector('.js-item-value');
     let jewel = JSON.parse(string);
+    // console.log(jewel)
     valueElem.innerHTML = jewel.chaosValue;
     parent.dataset.value = jewel.chaosValue;
 }

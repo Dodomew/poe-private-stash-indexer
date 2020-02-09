@@ -29,6 +29,10 @@ let environmentVariables = new EnvironmentVariables().getInstance();
 environmentVariables.getLeague();
 environmentVariables.getStats();
 
+const RequestHandler = require('./classes/RequestHandler');
+let requestHandler = new RequestHandler().getInstance();
+requestHandler.observeQueue();
+
 //get POE river asap
 // getRiver();
 
@@ -112,7 +116,15 @@ app.get('/get-jewel/:mod1/:mod2/:mod3/:mod4', (req, res) => {
 
     let jewel = buildJewel(mods);
     // console.log(jewel);
-    getMatchingTradeApiModifiers.prepJewelForTradeApi(jewel);
+    getMatchingTradeApiModifiers.prepJewelForTradeApi(jewel)
+        .then((listings) => {
+            console.log('listings dine');
+            jewel.listings = listings;
+            res.writeHead(200, {"Content-Type": "text/plain"});
+            res.end(JSON.stringify(jewel));
+        }).catch((error) => {
+        console.log(error);
+    })
     // findMatchingRiverItems(jewel)
     //     .then(() => {
     //         res.writeHead(200, {"Content-Type": "text/plain"});

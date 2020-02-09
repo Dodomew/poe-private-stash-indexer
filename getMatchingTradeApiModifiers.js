@@ -2,26 +2,15 @@ const request = require('request');
 const EnvironmentVariables = require('./classes/EnvironmentVariables');
 let environmentVariables = new EnvironmentVariables().getInstance();
 
+const RequestHandler = require('./classes/RequestHandler');
+let requestHandler = new RequestHandler().getInstance();
+
 async function getItemListing(ids) {
     const itemListingUrl = 'https://www.pathofexile.com/api/trade/fetch/' + ids.join();
     console.log('itemListingUrl');
     console.log(itemListingUrl);
 
-    return new Promise((resolve, reject) => {
-        request({
-                    url: itemListingUrl,
-                    method: 'GET'
-                },
-                (error, response, body) => {
-                    if (error) {
-                        return reject(error);
-                    }
-                    console.log('done with request123')
-                    // console.log(body)
-                    body = JSON.parse(body);
-                    return resolve({ body, response })
-                })
-    })
+    return requestHandler.enqueueRequest(itemListingUrl, "GET");
 }
 
 async function get (query) {
@@ -34,7 +23,7 @@ async function get (query) {
     let tradeApiResponse = body;
 
     console.log('getMatchingTradeApiModifiers');
-    console.log(tradeApiResponse)
+    // console.log(tradeApiResponse)
     return tradeApiResponse;
 }
 
@@ -42,21 +31,7 @@ async function getMatchingTradeApiModifiers (query) {
     const league = environmentVariables.getLeague();
     const tradeApiURL = 'https://www.pathofexile.com/api/trade/search/' + league;
     console.log(tradeApiURL);
-    return new Promise((resolve, reject) => {
-        request({
-                    url: tradeApiURL,
-                    method: 'POST',
-                    json: true,
-                    body: query
-                },
-                (error, response, body) => {
-                    if (error) {
-                        return reject(error);
-                    }
-                    console.log('done with request')
-            return resolve({ body, response })
-        })
-    })
+    return requestHandler.enqueueRequest(tradeApiURL,"POST", query);
 }
 
 function buildJsonObjectForTradeApiSearch(myJewel) {
@@ -143,7 +118,7 @@ function sanitizeJewel(myJewel) {
 async function getListingsOnTradeApi(myJewelResults) {
     let resultsArray = myJewelResults.result;
     console.log('resultArray')
-    console.log(resultsArray)
+    // console.log(resultsArray)
 
     if(resultsArray.length === 0) {
         return null;
@@ -161,7 +136,7 @@ async function getListingsOnTradeApi(myJewelResults) {
     }
 
     console.log('ids')
-    console.log(ids);
+    // console.log(ids);
 
     return await getItemListing(ids);
 }
@@ -173,7 +148,7 @@ async function prepJewelForTradeApi(myJewel) {
     console.log('jewel now has trade api mods')
     let myJewelQuery = buildJsonObjectForTradeApiSearch(myJewelWithTradeModIds);
     console.log('jewel query ready')
-    console.log(myJewelQuery);
+    // console.log(myJewelQuery);
 
     let result = await get(myJewelQuery);
     let listings = await getListingsOnTradeApi(result);
@@ -182,9 +157,12 @@ async function prepJewelForTradeApi(myJewel) {
 
     if(listings !== null) {
         if(listings.hasOwnProperty('body')) {
-            console.log(listings.body.result);
+            // console.log(listings.body.result);
+            return listings.body.result;
         }
     }
+
+    return null;
 }
 
 module.exports = {
