@@ -53,15 +53,22 @@ app.get('/get-jewel/:mod1', (req, res) => {
     // console.log('1337: ' + mods);
 
     let jewel = buildJewel(mods);
-    getMatchingTradeApiModifiers.prepJewelForTradeApi(jewel);
-
-    // findMatchingRiverItems(jewel)
-    //     .then(() => {
-    //         res.writeHead(200, {"Content-Type": "text/plain"});
-    //         res.end(JSON.stringify(jewel));
-    //     }).catch((error) => {
-    //     console.log(error);
-    // });
+    getMatchingTradeApiModifiers.prepJewelForTradeApi(jewel)
+    .then((listings) => {
+        if(listings !== null) {
+            console.log('listings 1 MODS');
+            jewel.listings = [];
+            for (let i = 0; i < listings.length; i++) {
+                jewel.listings[i] = listings[i].listing.price;
+            }
+            jewel.searchURL = listings[0].searchURL;
+            res.writeHead(200, {"Content-Type": "text/plain"});
+            res.end(JSON.stringify(jewel));
+        }
+    })
+    .catch((error) => {
+        console.log(error);
+    })
 });
 
 app.get('/get-jewel/:mod1/:mod2', (req, res) => {
@@ -70,18 +77,23 @@ app.get('/get-jewel/:mod1/:mod2', (req, res) => {
 
     let mods = [mod1, mod2];
 
-    // console.log('1338: ' + mods);
-
     let jewel = buildJewel(mods);
-    getMatchingTradeApiModifiers.prepJewelForTradeApi(jewel);
-    // console.log(jewel);
-    // findMatchingRiverItems(jewel)
-    //     .then(() => {
-    //         res.writeHead(200, {"Content-Type": "text/plain"});
-    //         res.end(JSON.stringify(jewel));
-    //     }).catch((error) => {
-    //     console.log(error);
-    // });
+    getMatchingTradeApiModifiers.prepJewelForTradeApi(jewel)
+    .then((listings) => {
+        if(listings !== null) {
+            console.log('listings 2 MODS');
+            jewel.listings = [];
+            for (let i = 0; i < listings.length; i++) {
+                jewel.listings[i] = listings[i].listing.price;
+            }
+            jewel.searchURL = listings[0].searchURL;
+            res.writeHead(200, {"Content-Type": "text/plain"});
+            res.end(JSON.stringify(jewel));
+        }
+    })
+    .catch((error) => {
+        console.log(error);
+    })
 });
 
 app.get('/get-jewel/:mod1/:mod2/:mod3', (req, res) => {
@@ -91,17 +103,23 @@ app.get('/get-jewel/:mod1/:mod2/:mod3', (req, res) => {
 
     let mods = [mod1, mod2, mod3];
 
-    // console.log('1339: ' + mods);
-
     let jewel = buildJewel(mods);
-    getMatchingTradeApiModifiers.prepJewelForTradeApi(jewel);
-    // findMatchingRiverItems(jewel)
-    //     .then(() => {
-    //         res.writeHead(200, {"Content-Type": "text/plain"});
-    //         res.end(JSON.stringify(jewel));
-    //     }).catch((error) => {
-    //         console.log(error);
-    // });
+    getMatchingTradeApiModifiers.prepJewelForTradeApi(jewel)
+    .then((listings) => {
+        if(listings !== null) {
+            console.log('listings 3 MODS');
+            jewel.listings = [];
+            for (let i = 0; i < listings.length; i++) {
+                jewel.listings[i] = listings[i].listing.price;
+            }
+            jewel.searchURL = listings[0].searchURL;
+            res.writeHead(200, {"Content-Type": "text/plain"});
+            res.end(JSON.stringify(jewel));
+        }
+    })
+    .catch((error) => {
+        console.log(error);
+    })
 });
 
 app.get('/get-jewel/:mod1/:mod2/:mod3/:mod4', (req, res) => {
@@ -112,26 +130,23 @@ app.get('/get-jewel/:mod1/:mod2/:mod3/:mod4', (req, res) => {
 
     let mods = [mod1, mod2, mod3, mod4];
 
-    // console.log('1340: ' + mods);
-
     let jewel = buildJewel(mods);
-    // console.log(jewel);
     getMatchingTradeApiModifiers.prepJewelForTradeApi(jewel)
         .then((listings) => {
-            console.log('listings dine');
-            jewel.listings = listings;
-            res.writeHead(200, {"Content-Type": "text/plain"});
-            res.end(JSON.stringify(jewel));
-        }).catch((error) => {
-        console.log(error);
-    })
-    // findMatchingRiverItems(jewel)
-    //     .then(() => {
-    //         res.writeHead(200, {"Content-Type": "text/plain"});
-    //         res.end(JSON.stringify(jewel));
-    //     }).catch((error) => {
-    //     console.log(error);
-    // });
+            if(listings !== null) {
+                console.log('listings 4 MODS');
+                jewel.listings = [];
+                for (let i = 0; i < listings.length; i++) {
+                    jewel.listings[i] = listings[i].listing.price;
+                }
+                jewel.searchURL = listings[0].searchURL;
+                res.writeHead(200, {"Content-Type": "text/plain"});
+                res.end(JSON.stringify(jewel));
+            }
+        })
+        .catch((error) => {
+            console.log(error);
+        })
 
     /*
      Steps:

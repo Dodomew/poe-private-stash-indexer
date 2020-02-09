@@ -95,10 +95,43 @@ function requestJewel(htmlElem, mods) {
     xmlhttp.send();
 }
 
+/*
+    jewel.listing :
+    [
+        {
+            type: b/o,
+            amount: 30,
+            currency: chaos
+        },
+         {
+             type: b/o,
+             amount: 50,
+             currency: chaos
+         },
+    ]
+ */
 function updateItemValue(parent, string) {
     let valueElem = parent.querySelector('.js-item-value');
     let jewel = JSON.parse(string);
-    // console.log(jewel)
+    console.log('UPDATE ITEM VALUE')
+    console.log(jewel)
+
+    if(jewel.listings.length === 0) {
+        valueElem.innerHTML = '0';
+        parent.dataset.value = '0';
+    }
+
+    jewel.chaosValue = 0;
+    let totalValidPricings = 0;
+
+    for (let i = 0; i < jewel.listings.length; i++) {
+        if(jewel.listings[i] !== null) {
+            jewel.chaosValue += jewel.listings[i].amount;
+            totalValidPricings++;
+        }
+    }
+
+    jewel.chaosValue = Math.floor(jewel.chaosValue / totalValidPricings);
     valueElem.innerHTML = jewel.chaosValue;
     parent.dataset.value = jewel.chaosValue;
 }

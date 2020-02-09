@@ -4,6 +4,21 @@ let instance = null;
 const QueueHandler = require('./QueueHandler');
 let queueHandler = new QueueHandler().getInstance();
 
+/*
+    The order of functions is:
+    1) enqueueRequest
+    2) createObjectForRequest
+    3) queueHandler.enqueue()
+    4) observeQueue
+    5) processQueue
+    6) requestGET/POST
+
+    When the request is done, its callback is invoked, which we set with createObjectForRequest IN enqueueRequest, meaning the callback will be executed in scope of enqueueRequest,
+    which is the function that is called by getMatchingTradeApiModifiers.
+    The response/data from the request is available in enqueueRequest, which we can then resolve.
+    Which then is accessible in getMatchingTradeApiModifiers
+ */
+
 class RequestHandler {
 
     constructor() {
@@ -13,28 +28,26 @@ class RequestHandler {
 
         this.amountOfGETRequestsMade = 0;
         this.amountOfPOSTRequestsMade = 0;
-        this.amountOfRequestsMade = this.amountOfGETRequestsMade + this.amountOfPOSTRequestsMade;
-        this.rateLimitPerSecond = 4;
-
+        this.rateLimitPerSecond = 20;
         this.requestsAreDone = true;
 
         instance = this;
         return instance;
     }
 
+    getInstance() {
+        return instance || new RequestHandler();
+    }
+
+    /*
+        This gets called when server initializes.
+     */
     observeQueue() {
-        let startTime = Date.now();
-
         setInterval(() => {
-            let endTime = Date.now();
-
             console.log('queueSize: ' + queueHandler.size());
-            if(endTime - startTime > 5000) {
-                console.log('5s have passed');
-                startTime = Date.now();
-                this.processQueue();
-            }
-        }, 1000)
+            console.log('5s have passed');
+            this.processQueue();
+        }, 5000)
     }
 
     processQueue() {
@@ -42,6 +55,10 @@ class RequestHandler {
             return;
         }
 
+        /*
+            If there are requests in the queue, we will process these according to the throttle limit
+            aka 4 every 5s
+         */
         if(queueHandler.size() !== 0) {
             this.requestsAreDone = false;
             console.log('queue is not empty');
@@ -54,8 +71,6 @@ class RequestHandler {
 
             for (let i = 0; i < forLoopLimit; i++) {
                 let requestPromise = queueHandler.dequeue();
-                console.log('requestPromise: ')
-                console.log(requestPromise);
 
                 let requestResultPromise;
 
@@ -71,7 +86,10 @@ class RequestHandler {
                 requestPromisesArray.push(requestResultPromise);
             }
 
-            Promise.all(requestPromisesArray).then((results) => {
+            /*
+                Wait for all current requests to be done before new requests can be made
+             */
+            Promise.all(requestPromisesArray).then(() => {
                this.requestsAreDone = true;
             });
 
@@ -81,50 +99,33 @@ class RequestHandler {
         }
     }
 
-    getInstance() {
-        return instance || new RequestHandler();
-    }
-
+    /*
+        This gets called from getMatchingTradeApiModifiers.js. The createObjectForQueue will add an object to the queue, so when the observer checks queue,
+        it will say that queue needs to be emptied (observeQueue trigger --> processQueue)
+        This will return a promise object containing the response and data from the request
+     */
     enqueueRequest(url, method, query) {
         return new Promise((resolve, reject) => {
-            this.test(
+            this.createObjectForQueue(
                 {
                     "url" : url,
                     "method" : method,
                     "query" : query || null
                 },
-                (error, data) => {
+                (error, response, data) => {
                     if (error) {
                         reject(error);
                     }
-                    resolve(data)
+                    resolve({response, data})
                 }
             )
         });
-
-    //     let objectToEnqueue = new Promise(
-    // {
-    //             "url" : url,
-    //             "method" : method,
-    //             "query" : query || null
-    //         });
-    //
-    //     queueHandler.enqueue(objectToEnqueue);
-    //
-    //     if(objectToEnqueue.method === 'GET') {
-    //         objectToEnqueue = this.requestGET(objectToEnqueue.url);
-    //     }
-    //     else if(objectToEnqueue.method === 'POST') {
-    //         objectToEnqueue = this.requestPOST(objectToEnqueue.url, objectToEnqueue.query);
-    //     }
-    //     else {
-    //         console.log('requestPromise has no method');
-    //     }
-    //
-    //     return objectToEnqueue;
     }
 
-    test(requestData, callback) {
+    /*
+        This function stores the parameters for the request and the callback for when the request is done.
+     */
+    createObjectForQueue(requestData, callback) {
         let objectToEnqueue = {
             requestData: requestData,
             callback: callback
@@ -141,14 +142,14 @@ class RequestHandler {
                     },
                     (error, response, body) => {
                         if (error) {
-                            callback(error, null);
+                            callback(error, response, body);
                             return reject(error);
                         }
                         console.log('RequestHandler done with GET')
                         this.amountOfGETRequestsMade++;
                         console.log('GET: ' + this.amountOfGETRequestsMade);
                         body = JSON.parse(body);
-                        callback(null, body);
+                        callback(null, response, body);
                         return resolve({ body, response })
                     })
         })
@@ -164,13 +165,13 @@ class RequestHandler {
                     },
                     (error, response, body) => {
                         if (error) {
-                            callback(error, null);
+                            callback(error, response, body);
                             return reject(error);
                         }
                         console.log('RequestHandler done with POST')
                         this.amountOfPOSTRequestsMade++;
                         console.log('POST: ' + this.amountOfPOSTRequestsMade);
-                        callback(null, body);
+                        callback(null, response, body);
                         return resolve({ body, response })
                     })
         });

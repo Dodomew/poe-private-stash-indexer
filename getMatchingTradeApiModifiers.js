@@ -10,32 +10,51 @@ async function getItemListing(ids) {
     console.log('itemListingUrl');
     console.log(itemListingUrl);
 
-    return requestHandler.enqueueRequest(itemListingUrl, "GET");
-}
+    let result = await requestHandler.enqueueRequest(itemListingUrl, "GET");
+    let response = result.response;
+    let body = result.data;
 
-async function get (query) {
-    let { body, response } = await getMatchingTradeApiModifiers(query);
-
-    if (response.statusCode !== 200) {
+    if (result.response.statusCode !== 200) {
         return {response, body};
     }
 
-    let tradeApiResponse = body;
+    return body;
+}
 
-    console.log('getMatchingTradeApiModifiers');
-    // console.log(tradeApiResponse)
-    return tradeApiResponse;
+async function getMatchingModsOnTrade (query) {
+    let result = await getMatchingTradeApiModifiers(query);
+    let response = result.response;
+    let body = result.data;
+
+    if (result.response.statusCode !== 200) {
+        return {response, body};
+    }
+    return body;
 }
 
 async function getMatchingTradeApiModifiers (query) {
     const league = environmentVariables.getLeague();
     const tradeApiURL = 'https://www.pathofexile.com/api/trade/search/' + league;
     console.log(tradeApiURL);
-    return requestHandler.enqueueRequest(tradeApiURL,"POST", query);
+    return await requestHandler.enqueueRequest(tradeApiURL,"POST", query);
 }
 
 function buildJsonObjectForTradeApiSearch(myJewel) {
     console.log('buildJsonObjectForTradeApiSearch')
+
+    let emptyModifiersObj = {
+        "type": "and",
+        "filters": [
+            {
+                "id": "pseudo.pseudo_number_of_empty_affix_mods",
+                "value": {
+                    "min": 1
+                },
+                "disabled": false
+            }
+        ]
+    };
+
     let jsonObj = {
         "query": {
             "status": {
@@ -61,6 +80,11 @@ function buildJsonObjectForTradeApiSearch(myJewel) {
             "price": "asc"
         }
     };
+
+    //is rare jewel
+    if(myJewel.tradeModsIDs.length === 3) {
+        jsonObj.query.stats.push(emptyModifiersObj);
+    }
 
     for (let i = 0; i < myJewel.tradeModsIDs.length; i++) {
         jsonObj.query.stats[0].filters[i] = {
@@ -96,7 +120,7 @@ function findMatchingModID(myJewel) {
 
 function sanitizeJewel(myJewel) {
     console.log('sanitizeJewel')
-    let selectAllNumbersRegex = /[0-9]+/g;
+    let selectAllNumbersRegex = /([0-9]*[.])?[0-9]+/g;
     myJewel.tradeMods = [];
 
     for(let i = 0;i < myJewel.explicitMods.length;i++) {
@@ -109,18 +133,14 @@ function sanitizeJewel(myJewel) {
 
         myJewel.tradeMods[i] = mod;
     }
-
-    console.log(myJewel)
-
     return myJewel;
 }
 
 async function getListingsOnTradeApi(myJewelResults) {
     let resultsArray = myJewelResults.result;
-    console.log('resultArray')
-    // console.log(resultsArray)
 
     if(resultsArray.length === 0) {
+        console.log('resultsArray is 0')
         return null;
     }
 
@@ -134,10 +154,6 @@ async function getListingsOnTradeApi(myJewelResults) {
             break;
         }
     }
-
-    console.log('ids')
-    // console.log(ids);
-
     return await getItemListing(ids);
 }
 
@@ -148,20 +164,16 @@ async function prepJewelForTradeApi(myJewel) {
     console.log('jewel now has trade api mods')
     let myJewelQuery = buildJsonObjectForTradeApiSearch(myJewelWithTradeModIds);
     console.log('jewel query ready')
-    // console.log(myJewelQuery);
 
-    let result = await get(myJewelQuery);
+    let result = await getMatchingModsOnTrade(myJewelQuery);
     let listings = await getListingsOnTradeApi(result);
 
-    console.log('listings:')
-
     if(listings !== null) {
-        if(listings.hasOwnProperty('body')) {
-            // console.log(listings.body.result);
-            return listings.body.result;
+        if(listings.result.length > 0) {
+            listings.result[0].searchURL = 'https://www.pathofexile.com/trade/search/Metamorph/' + result.id;
+            return listings.result;
         }
     }
-
     return null;
 }
 
