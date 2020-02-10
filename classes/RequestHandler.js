@@ -73,7 +73,7 @@ class RequestHandler {
                 let requestPromise = queueHandler.dequeue();
 
                 let requestResultPromise;
-
+                console.log(requestPromise)
                 if(requestPromise.requestData.method === 'GET') {
                     requestResultPromise = this.requestGET(requestPromise.requestData.url, requestPromise.callback);
                 }

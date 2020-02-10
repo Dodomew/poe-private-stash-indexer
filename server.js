@@ -13,8 +13,11 @@ const filterItems = require('./filterItems');
 const organizeItems = require('./organizeItems');
 const getValueOfItems = require('./getters/getValueOfItems');
 const assignValueToItems = require('./assignValuesToItems');
-const EnvironmentVariables = require('./classes/EnvironmentVariables');
 const getMatchingTradeApiModifiers = require('./getMatchingTradeApiModifiers');
+
+const EnvironmentVariables = require('./classes/EnvironmentVariables');
+const CurrencyHandler = require('./classes/CurrencyHandler');
+const RequestHandler = require('./classes/RequestHandler');
 
 // create application/x-www-form-urlencoded parser
 let urlencodedParser = bodyParser.urlencoded({ extended: false })
@@ -25,13 +28,15 @@ app.set('view engine', 'ejs');
 //now we can serve static files, like .css
 app.use(express.static(path.join(__dirname, 'public')));
 
-let environmentVariables = new EnvironmentVariables().getInstance();
+const environmentVariables = new EnvironmentVariables().getInstance();
 environmentVariables.getLeague();
 environmentVariables.getStats();
 
-const RequestHandler = require('./classes/RequestHandler');
-let requestHandler = new RequestHandler().getInstance();
+const requestHandler = new RequestHandler().getInstance();
 requestHandler.observeQueue();
+
+const currenyHandler = new CurrencyHandler().getInstance();
+currenyHandler.getJsonFromAPI();
 
 //get POE river asap
 // getRiver();

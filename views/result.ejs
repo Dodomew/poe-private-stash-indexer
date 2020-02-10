@@ -81,10 +81,17 @@
                                                             <button class="btn btn--accordion js-accordion-toggle"></button>
                                                         <% } %>
                                                     </div>
+                                                    <% if(category[i] === 'jewels') { %>
+                                                        <a href="#" target="_blank" rel="noopener noreferrer">
+                                                            To trade site
+                                                        </a>
+                                                    <% } %>
                                                     <h4 class="list-item__value js-item-value">
                                                         <%= item.chaosValue %>
-                                                        <% if(item.stackSize) { %>
+                                                        <% if (item.stackSize) { %>
                                                             / <%= Math.round(item.chaosValue *  item.stackSize * 100) / 100 %>
+                                                        <% } else { %>
+                                                            / 1
                                                         <% } %>
                                                     </h4>
                                                 </div>

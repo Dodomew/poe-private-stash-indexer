@@ -42,19 +42,6 @@ async function getMatchingTradeApiModifiers (query) {
 function buildJsonObjectForTradeApiSearch(myJewel) {
     console.log('buildJsonObjectForTradeApiSearch')
 
-    let emptyModifiersObj = {
-        "type": "and",
-        "filters": [
-            {
-                "id": "pseudo.pseudo_number_of_empty_affix_mods",
-                "value": {
-                    "min": 1
-                },
-                "disabled": false
-            }
-        ]
-    };
-
     let jsonObj = {
         "query": {
             "status": {
@@ -80,11 +67,6 @@ function buildJsonObjectForTradeApiSearch(myJewel) {
             "price": "asc"
         }
     };
-
-    //is rare jewel
-    if(myJewel.tradeModsIDs.length === 3) {
-        jsonObj.query.stats.push(emptyModifiersObj);
-    }
 
     for (let i = 0; i < myJewel.tradeModsIDs.length; i++) {
         jsonObj.query.stats[0].filters[i] = {

@@ -68,6 +68,9 @@ function requestJewel(htmlElem, mods) {
  */
 function updateItemValue(parent, string) {
     let valueElem = parent.querySelector('.js-item-value');
+    let linkToTrade = parent.querySelector('a');
+    console.log(linkToTrade);
+
     let jewel = JSON.parse(string);
     console.log('UPDATE ITEM VALUE')
     console.log(jewel)
@@ -90,6 +93,7 @@ function updateItemValue(parent, string) {
     jewel.chaosValue = Math.floor(jewel.chaosValue / totalValidPricings);
     valueElem.innerHTML = jewel.chaosValue;
     parent.dataset.value = jewel.chaosValue;
+    linkToTrade.href = jewel.searchURL;
 }
 
 // https://stackoverflow.com/questions/30106476/using-javascripts-atob-to-decode-base64-doesnt-properly-decode-utf-8-strings
