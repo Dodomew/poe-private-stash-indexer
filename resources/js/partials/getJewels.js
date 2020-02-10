@@ -69,11 +69,7 @@ function requestJewel(htmlElem, mods) {
 function updateItemValue(parent, string) {
     let valueElem = parent.querySelector('.js-item-value');
     let linkToTrade = parent.querySelector('a');
-    console.log(linkToTrade);
-
     let jewel = JSON.parse(string);
-    console.log('UPDATE ITEM VALUE')
-    console.log(jewel)
 
     if(jewel.listings.length === 0) {
         valueElem.innerHTML = '0';

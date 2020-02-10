@@ -28,7 +28,7 @@ class RequestHandler {
 
         this.amountOfGETRequestsMade = 0;
         this.amountOfPOSTRequestsMade = 0;
-        this.rateLimitPerSecond = 20;
+        this.rateLimit = 18; //per 5s
         this.requestsAreDone = true;
 
         instance = this;
@@ -62,8 +62,8 @@ class RequestHandler {
         if(queueHandler.size() !== 0) {
             this.requestsAreDone = false;
             console.log('queue is not empty');
-            let forLoopLimit = this.rateLimitPerSecond;
-            if(queueHandler.size() < this.rateLimitPerSecond) {
+            let forLoopLimit = this.rateLimit;
+            if(queueHandler.size() < this.rateLimit) {
                 forLoopLimit = queueHandler.size();
             }
 
@@ -73,7 +73,6 @@ class RequestHandler {
                 let requestPromise = queueHandler.dequeue();
 
                 let requestResultPromise;
-                console.log(requestPromise)
                 if(requestPromise.requestData.method === 'GET') {
                     requestResultPromise = this.requestGET(requestPromise.requestData.url, requestPromise.callback);
                 }
@@ -138,20 +137,26 @@ class RequestHandler {
         return new Promise((resolve, reject) => {
             request({
                         url: url,
-                        method: 'GET'
+                        method: 'GET',
+                        timeout: 10000,
+                        pool: {
+                            maxSockets: 5
+                        }
                     },
                     (error, response, body) => {
                         if (error) {
+                            console.log(error.code === 'ETIMEDOUT');
                             callback(error, response, body);
                             return reject(error);
                         }
+
                         console.log('RequestHandler done with GET')
                         this.amountOfGETRequestsMade++;
                         console.log('GET: ' + this.amountOfGETRequestsMade);
                         body = JSON.parse(body);
                         callback(null, response, body);
                         return resolve({ body, response })
-                    })
+                    });
         })
     }
 
@@ -161,19 +166,25 @@ class RequestHandler {
                         url: url,
                         method: 'POST',
                         json: true,
-                        body: query
+                        body: query,
+                        timeout: 10000,
+                        pool: {
+                            maxSockets: 5
+                        }
                     },
                     (error, response, body) => {
                         if (error) {
+                            console.log(error.code === 'ETIMEDOUT');
                             callback(error, response, body);
                             return reject(error);
                         }
+
                         console.log('RequestHandler done with POST')
                         this.amountOfPOSTRequestsMade++;
                         console.log('POST: ' + this.amountOfPOSTRequestsMade);
                         callback(null, response, body);
                         return resolve({ body, response })
-                    })
+                    });
         });
     }
 }

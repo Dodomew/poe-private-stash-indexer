@@ -19,6 +19,8 @@ const EnvironmentVariables = require('./classes/EnvironmentVariables');
 const CurrencyHandler = require('./classes/CurrencyHandler');
 const RequestHandler = require('./classes/RequestHandler');
 
+const port = process.env.PORT || 3001;
+
 // create application/x-www-form-urlencoded parser
 let urlencodedParser = bodyParser.urlencoded({ extended: false })
 
@@ -36,7 +38,7 @@ const requestHandler = new RequestHandler().getInstance();
 requestHandler.observeQueue();
 
 const currenyHandler = new CurrencyHandler().getInstance();
-currenyHandler.getJsonFromAPI();
+currenyHandler.requestCurrency();
 
 //get POE river asap
 // getRiver();
@@ -209,8 +211,6 @@ app.use(function(req, res, next) {
 app.use(function(err, req, res, next) {
     return res.status(500).send({ error: err });
 });
-
-var port = process.env.PORT || 3001;
 
 app.listen(port, function () {
     console.log('Server running at http://127.0.0.1:' + port + '/');

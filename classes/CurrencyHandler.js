@@ -42,6 +42,31 @@ class CurrencyHandler {
         }
         return this.data = body;
     }
+
+    getData() {
+        console.log('CurrencyHandler getData')
+        if(this.data !== null) {
+            console.log('return data')
+            return this.data;
+        }
+        else {
+            console.log('await getData');
+            this.getJsonFromAPI().then((data) => {
+                this.data = data;
+                return this.data;
+            });
+        }
+    }
+
+    requestCurrency() {
+        console.log('getJsonFromApi')
+        this.getJsonFromAPI().then(() => {
+            setTimeout(() => {
+                console.log('requestCurrency')
+                this.requestCurrency()
+            }, 3600000)
+        })
+    }
 }
 
 module.exports = CurrencyHandler;
